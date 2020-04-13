@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "730555540635",
+    "firebase_url": "https://instagram-app-cdf28.firebaseio.com",
+    "project_id": "instagram-app-cdf28",
+    "storage_bucket": "instagram-app-cdf28.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:730555540635:android:4b5004c1c103d54490923e",
+        "android_client_info": {
+          "package_name": "com.cosminmihai.instagram_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "730555540635-0pjvgcivcor1ppplle5k47v1dhb3bdtr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDIJ4b6uMS2Xi6dzmXbAconuUoqnDxeLis"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "730555540635-0pjvgcivcor1ppplle5k47v1dhb3bdtr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

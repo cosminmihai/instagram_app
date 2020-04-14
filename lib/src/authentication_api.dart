@@ -22,4 +22,9 @@ class AuthApi {
   Future<void> logOut() async {
     await auth.signOut();
   }
+
+  ///Send the reset password link to the [email].
+  Future<void> sendEmailPasswordRecovery(String email) async {
+    await auth.sendPasswordResetEmail(email: email);
+  }
 }

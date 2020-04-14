@@ -47,6 +47,7 @@ class _LoginPageState extends State<LoginPage> {
               alignment: AlignmentDirectional.centerEnd,
               child: FlatButton(
                 onPressed: () {
+                  Navigator.pushNamed(context, 'forgotPassword');
                   print('Forgot password');
                 },
                 child: Text(

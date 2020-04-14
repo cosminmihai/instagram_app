@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram_app/src/authentication_api.dart';
+import 'package:instagram_app/src/forgot_password.dart';
 import 'package:instagram_app/src/home_page.dart';
 import 'package:instagram_app/src/login_page.dart';
 
@@ -21,7 +22,8 @@ class MyApp extends StatelessWidget {
       ),
       routes: <String, WidgetBuilder>{
         'loginpage': (BuildContext context) => LoginPage(),
-        'homepage': (BuildContext context) => HomePage()
+        'homepage': (BuildContext context) => HomePage(),
+        'forgotPassword': (BuildContext context) => ForgotPasswordPage()
       },
     );
   }

@@ -12,8 +12,6 @@ import 'package:instagram_app/src/presentation/home.dart';
 import 'package:instagram_app/src/reducer/reducer.dart';
 import 'package:redux/redux.dart';
 
-AuthApi auth;
-
 void main() {
   final AuthApi auth = AuthApi(auth: FirebaseAuth.instance);
   final AppMiddleware middleware = AppMiddleware(authApi: auth);

@@ -5,7 +5,6 @@ import 'package:instagram_app/src/presentation/home_page.dart';
 import 'package:instagram_app/src/presentation/login_page.dart';
 
 class Home extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return UserContainer(
@@ -15,4 +14,3 @@ class Home extends StatelessWidget {
     );
   }
 }
-

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:instagram_app/src/actions/reset_password.dart';
+import 'package:instagram_app/src/models/app_state.dart';
 import '../../main.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
@@ -8,6 +11,28 @@ class ForgotPasswordPage extends StatefulWidget {
 
 class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   final TextEditingController emailForgot = TextEditingController();
+
+  Future<void> onResult(dynamic action) async {
+    await showDialog<void>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text('Email sent'),
+        content: const Text('An email was send to the mail address that you entered.'),
+        actions: <Widget>[
+          Container(
+            alignment: AlignmentDirectional.center,
+            child: OutlineButton(
+              onPressed: () {
+                Navigator.pushReplacementNamed(context, 'loginpage');
+              },
+              child: const Text('Great!'),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,26 +80,8 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
               color: Colors.blue,
               onPressed: () async {
                 if (emailForgot != null) {
-                  await auth.sendEmailPasswordRecovery(emailForgot.text.trim());
-                  await showDialog<void>(
-                    context: context,
-                    builder: (BuildContext context) => AlertDialog(
-                      title: const Text('Email sent'),
-                      content: const Text(
-                          'An email was send to the mail address that you entered.'),
-                      actions: <Widget>[
-                        Container(
-                          alignment: AlignmentDirectional.center,
-                          child: OutlineButton(
-                            onPressed: () {
-                              Navigator.pushReplacementNamed(
-                                  context, 'loginpage');
-                            },
-                            child: const Text('Great!'),
-                          ),
-                        ),
-                      ],
-                    ),
+                  StoreProvider.of<AppState>(context).dispatch(
+                    ResetPassword(emailForgot.text, onResult),
                   );
                 }
               },

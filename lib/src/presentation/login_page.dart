@@ -1,8 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import '../../main.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:instagram_app/src/actions/login.dart';
+import 'package:instagram_app/src/models/app_state.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -10,8 +11,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  TextEditingController email1 = TextEditingController();
-  TextEditingController password1 = TextEditingController();
+  TextEditingController email = TextEditingController();
+  TextEditingController password = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +29,7 @@ class _LoginPageState extends State<LoginPage> {
             const SizedBox(height: 32.0),
             TextField(
               keyboardType: TextInputType.emailAddress,
-              controller: email1,
+              controller: email,
               decoration: const InputDecoration(
                 hintText: 'Email address',
                 border: OutlineInputBorder(),
@@ -36,7 +37,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
             const SizedBox(height: 32.0),
             TextField(
-              controller: password1,
+              controller: password,
               obscureText: true,
               decoration: const InputDecoration(
                 hintText: 'Password',
@@ -62,11 +63,8 @@ class _LoginPageState extends State<LoginPage> {
               elevation: 0,
               color: Colors.blue,
               onPressed: () async {
-                final FirebaseUser user =
-                    await auth.login(email1.text.trim(), password1.text);
-                if (email1.text.isNotEmpty && password1.text.isNotEmpty) {
-                  await Navigator.pushReplacementNamed(context, 'homepage');
-                  print('Succesfuly logged in');
+                if (email.text.isNotEmpty && password.text.isNotEmpty) {
+                  StoreProvider.of<AppState>(context).dispatch(Login(email.text, password.text));
                 }
               },
               child: const Text('Log in'),

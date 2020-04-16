@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:instagram_app/main.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:instagram_app/src/actions/logout.dart';
+import 'package:instagram_app/src/models/app_state.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -11,8 +13,7 @@ class HomePage extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.clear),
             onPressed: () async {
-              await auth.logOut();
-              await Navigator.pushReplacementNamed(context, 'loginpage');
+              StoreProvider.of<AppState>(context).dispatch(LogOut());
             },
           ),
         ],

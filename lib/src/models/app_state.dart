@@ -1,11 +1,11 @@
 import 'app_user.dart';
 
 class AppState {
-  AppState({this.user});
+  const AppState({this.user});
 
   final AppUser user;
 
-  AppState copyWith({AppState user}) {
+  AppState copyWith({AppUser user}) {
     return AppState(
       user: user ?? this.user,
     );

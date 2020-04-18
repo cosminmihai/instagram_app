@@ -24,7 +24,6 @@ void main() {
       middleware,
     ],
   )..dispatch(InitializeApp());
-
   runApp(InstagramClone(store: store));
 }
 
@@ -44,7 +43,7 @@ class InstagramClone extends StatelessWidget {
           'loginpage': (BuildContext context) => const LoginPage(),
           'homepage': (BuildContext context) => HomePage(),
           'forgotPassword': (BuildContext context) => ForgotPasswordPage(),
-          'registerPage': (BuildContext context) => RegisterPage(),
+          'registerPage': (BuildContext context) => const RegisterPage(),
         },
       ),
     );

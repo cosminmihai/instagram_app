@@ -50,7 +50,10 @@ class AppMiddleware extends MiddlewareClass<AppState> {
       store.dispatch(successfulAction);
       action.actionResult(successfulAction);
     } else if (action is Registration) {
-      final FirebaseUser firebaseUser = await authApi.register(action.email, action.password);
+      final FirebaseUser firebaseUser = await authApi.register(
+        action.email,
+        action.password,
+      );
       final AppUser appUser = AppUser(
         uid: firebaseUser.uid,
         displayName: firebaseUser.displayName,

@@ -6,6 +6,8 @@ import 'package:instagram_app/src/actions/registration.dart';
 import 'package:instagram_app/src/models/app_state.dart';
 
 class RegisterPage extends StatefulWidget {
+  const RegisterPage({Key key}) : super(key: key);
+
   @override
   _RegisterPageState createState() => _RegisterPageState();
 }

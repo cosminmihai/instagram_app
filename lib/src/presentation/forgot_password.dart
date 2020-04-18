@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:instagram_app/src/actions/reset_password.dart';
 import 'package:instagram_app/src/models/app_state.dart';
-import '../../main.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
   @override

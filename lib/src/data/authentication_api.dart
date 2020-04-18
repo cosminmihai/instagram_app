@@ -13,8 +13,12 @@ class AuthApi {
 
   /// Tries to log the user in using his email and password.
   Future<FirebaseUser> login(String email, String password) async {
-    final AuthResult result = await auth.signInWithEmailAndPassword(
-        email: email.trim(), password: password);
+    final AuthResult result = await auth.signInWithEmailAndPassword(email: email.trim(), password: password);
+    return result.user;
+  }
+
+  Future<FirebaseUser> register(String email, String password) async {
+    final AuthResult result = await auth.createUserWithEmailAndPassword(email: email.trim(), password: password);
     return result.user;
   }
 

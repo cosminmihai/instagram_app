@@ -9,10 +9,12 @@ import 'package:instagram_app/src/presentation/forgot_password.dart';
 import 'package:instagram_app/src/presentation/home_page.dart';
 import 'package:instagram_app/src/presentation/login_page.dart';
 import 'package:instagram_app/src/presentation/home.dart';
+import 'package:instagram_app/src/presentation/registration_page.dart';
 import 'package:instagram_app/src/reducer/reducer.dart';
 import 'package:redux/redux.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   final AuthApi auth = AuthApi(auth: FirebaseAuth.instance);
   final AppMiddleware middleware = AppMiddleware(authApi: auth);
   final Store<AppState> store = Store<AppState>(
@@ -21,7 +23,8 @@ void main() {
     middleware: <Middleware<AppState>>[
       middleware,
     ],
-  ).dispatch(InitializeApp());
+  )..dispatch(InitializeApp());
+
   runApp(InstagramClone(store: store));
 }
 
@@ -35,14 +38,13 @@ class InstagramClone extends StatelessWidget {
     return StoreProvider<AppState>(
       store: store,
       child: MaterialApp(
-        home: Home(),
-        theme: ThemeData.dark().copyWith(
-          backgroundColor: Colors.black,
-        ),
+        home: const Home(),
+        theme: ThemeData.dark(),
         routes: <String, WidgetBuilder>{
-          'loginpage': (BuildContext context) => LoginPage(),
+          'loginpage': (BuildContext context) => const LoginPage(),
           'homepage': (BuildContext context) => HomePage(),
-          'forgotPassword': (BuildContext context) => ForgotPasswordPage()
+          'forgotPassword': (BuildContext context) => ForgotPasswordPage(),
+          'registerPage': (BuildContext context) => RegisterPage(),
         },
       ),
     );

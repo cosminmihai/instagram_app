@@ -6,6 +6,8 @@ import 'package:instagram_app/src/actions/login.dart';
 import 'package:instagram_app/src/models/app_state.dart';
 
 class LoginPage extends StatefulWidget {
+  const LoginPage({Key key}) : super(key: key);
+
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -17,6 +19,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.all(16.0),
@@ -49,7 +52,6 @@ class _LoginPageState extends State<LoginPage> {
               child: FlatButton(
                 onPressed: () {
                   Navigator.pushNamed(context, 'forgotPassword');
-                  print('Forgot password');
                 },
                 child: Text(
                   'Forgot password?',
@@ -83,7 +85,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       recognizer: TapGestureRecognizer()
                         ..onTap = () {
-                          print('Sign up.');
+                          Navigator.pushNamed(context, 'registerPage');
                         },
                     ),
                   ],

@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:instagram_app/src/actions/initialize_app.dart';
 import 'package:instagram_app/src/actions/login.dart';
 import 'package:instagram_app/src/actions/logout.dart';
+import 'package:instagram_app/src/actions/registration.dart';
 import 'package:instagram_app/src/actions/reset_password.dart';
 import 'package:instagram_app/src/data/authentication_api.dart';
 import 'package:instagram_app/src/models/app_state.dart';
@@ -19,14 +20,14 @@ class AppMiddleware extends MiddlewareClass<AppState> {
   Future<void> call(Store<AppState> store, dynamic action, NextDispatcher next) async {
     next(action);
     if (action is InitializeApp) {
-      final FirebaseUser provideUser = await authApi.getUser();
+      final FirebaseUser firebaseUser = await authApi.getUser();
       final AppUser appUser = AppUser(
-        uid: provideUser.uid,
-        displayName: provideUser.displayName,
+        uid: firebaseUser.uid,
+        displayName: firebaseUser.displayName,
         username: null,
-        email: provideUser.email,
+        email: firebaseUser.email,
         birthDate: null,
-        photoUrl: provideUser.photoUrl,
+        photoUrl: firebaseUser.photoUrl,
       );
       store.dispatch(InitializeAppSuccessful(appUser));
     } else if (action is Login) {
@@ -48,6 +49,17 @@ class AppMiddleware extends MiddlewareClass<AppState> {
       final ResetPasswordSuccessful successfulAction = ResetPasswordSuccessful();
       store.dispatch(successfulAction);
       action.actionResult(successfulAction);
+    } else if (action is Registration) {
+      final FirebaseUser firebaseUser = await authApi.register(action.email, action.password);
+      final AppUser appUser = AppUser(
+        uid: firebaseUser.uid,
+        displayName: firebaseUser.displayName,
+        username: action.userName,
+        email: firebaseUser.email,
+        birthDate: action.birthDate,
+        photoUrl: firebaseUser.photoUrl,
+      );
+      store.dispatch(RegistrationSuccessful(appUser));
     }
   }
 }

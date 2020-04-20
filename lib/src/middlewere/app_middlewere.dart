@@ -8,8 +8,8 @@ import 'package:instagram_app/src/actions/reset_password.dart';
 import 'package:instagram_app/src/data/authentication_api.dart';
 import 'package:instagram_app/src/models/app_state.dart';
 import 'package:instagram_app/src/models/app_user.dart';
-import 'package:redux/redux.dart';
 import 'package:meta/meta.dart';
+import 'package:redux/redux.dart';
 
 class AppMiddleware extends MiddlewareClass<AppState> {
   AppMiddleware({@required this.authApi});
@@ -21,15 +21,19 @@ class AppMiddleware extends MiddlewareClass<AppState> {
     next(action);
     if (action is InitializeApp) {
       final FirebaseUser firebaseUser = await authApi.getUser();
-      final AppUser appUser = AppUser(
-        uid: firebaseUser.uid,
-        displayName: firebaseUser.displayName,
-        username: null,
-        email: firebaseUser.email,
-        birthDate: null,
-        photoUrl: firebaseUser.photoUrl,
-      );
-      store.dispatch(InitializeAppSuccessful(appUser));
+      if (firebaseUser == null) {
+        store.dispatch(InitializeAppSuccessful(null));
+      } else {
+        final AppUser appUser = AppUser(
+          uid: firebaseUser.uid,
+          displayName: firebaseUser.displayName,
+          username: null,
+          email: firebaseUser.email,
+          birthDate: null,
+          photoUrl: firebaseUser.photoUrl,
+        );
+        store.dispatch(InitializeAppSuccessful(appUser));
+      }
     } else if (action is Login) {
       final FirebaseUser firebaseUser = await authApi.login(action.email, action.password);
       final AppUser appUser = AppUser(
@@ -62,7 +66,9 @@ class AppMiddleware extends MiddlewareClass<AppState> {
         birthDate: action.birthDate,
         photoUrl: firebaseUser.photoUrl,
       );
-      store.dispatch(RegistrationSuccessful(appUser));
+      final RegistrationSuccessful registrationSuccessful = RegistrationSuccessful(appUser);
+      store.dispatch(registrationSuccessful);
+      action.result(registrationSuccessful);
     }
   }
 }

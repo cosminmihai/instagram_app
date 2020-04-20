@@ -18,6 +18,12 @@ class _RegisterPageState extends State<RegisterPage> {
   TextEditingController userName = TextEditingController();
   TextEditingController birdDate = TextEditingController();
 
+  void _onResult(dynamic action) {
+    if (action is RegistrationSuccessful) {
+      Navigator.pop(context);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -96,6 +102,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     birthDate: birdDate.text,
                     password: password.text,
                     userName: userName.text,
+                    result: _onResult,
                   ),
                 );
               },

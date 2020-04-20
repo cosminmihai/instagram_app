@@ -14,7 +14,6 @@ class HomePage extends StatelessWidget {
             icon: Icon(Icons.clear),
             onPressed: () async {
               StoreProvider.of<AppState>(context).dispatch(LogOut());
-              await Navigator.pushReplacementNamed(context, 'loginpage');
             },
           ),
         ],

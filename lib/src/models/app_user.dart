@@ -1,6 +1,17 @@
 import 'package:flutter/cupertino.dart';
 
 class AppUser {
+  factory AppUser.fromJson(Map<String, dynamic> json) {
+    return AppUser(
+      uid: json['uid'],
+      displayName: json['displayName'],
+      username: json['username'],
+      email: json['email'],
+      birthDate: json['birthDate'],
+      photoUrl: json['photoUrl'],
+    );
+  }
+
   AppUser({
     @required this.uid,
     @required this.displayName,
@@ -16,6 +27,17 @@ class AppUser {
   final String email;
   final String birthDate;
   final String photoUrl;
+
+  Map<String, dynamic> get json {
+    return <String, dynamic>{
+      'uid': uid,
+      'displayName': displayName,
+      'username': username,
+      'email': email,
+      'birthDate': birthDate,
+      'photoUrl': photoUrl,
+    };
+  }
 
   AppUser copyWith({
     final String uid,

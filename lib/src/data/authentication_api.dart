@@ -1,34 +1,64 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:instagram_app/src/models/app_user.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AuthApi {
-  const AuthApi({this.auth});
+  const AuthApi({@required this.auth, @required this.firestore});
 
+  final Firestore firestore;
   final FirebaseAuth auth;
 
   /// Returns the current login in user or null if there is no user logged in.
-  Future<FirebaseUser> getUser() async {
+
+  Future<AppUser> getUser() async {
     final FirebaseUser user = await auth.currentUser();
-    return user;
+    return _buildUser(user);
   }
 
   /// Tries to log the user in using his email and password.
-  Future<FirebaseUser> login(String email, String password) async {
+
+  Future<AppUser> login(String email, String password) async {
     final AuthResult result = await auth.signInWithEmailAndPassword(email: email.trim(), password: password);
-    return result.user;
+    return _buildUser(result.user);
   }
 
-  Future<FirebaseUser> register(String email, String password) async {
+  Future<AppUser> register(String email, String password) async {
     final AuthResult result = await auth.createUserWithEmailAndPassword(email: email.trim(), password: password);
-    return result.user;
+    return _buildUser(result.user);
   }
 
   /// Log the user out.
+
   Future<void> logOut() async {
     await auth.signOut();
   }
 
   ///Send the reset password link to the [email].
+
   Future<void> sendEmailPasswordRecovery(String email) async {
     await auth.sendPasswordResetEmail(email: email);
+  }
+
+  ///Create a Firebase user and store the data in Firestore.
+  Future<AppUser> _buildUser(FirebaseUser user) async {
+    if (user == null) {
+      return null;
+    }
+    final DocumentSnapshot snapshot = await firestore.document('users/${user.uid}').get();
+    if (snapshot.exists) {
+      return AppUser.fromJson(snapshot.data);
+    }
+
+    final AppUser appUser = AppUser(
+      uid: user.uid,
+      displayName: user.displayName,
+      username: null,
+      email: user.email,
+      birthDate: null,
+      photoUrl: user.photoUrl,
+    );
+    await firestore.document('users/${user.uid}').setData(appUser.json);
+    return appUser;
   }
 }

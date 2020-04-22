@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -15,7 +16,7 @@ import 'package:redux/redux.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  final AuthApi auth = AuthApi(auth: FirebaseAuth.instance);
+  final AuthApi auth = AuthApi(auth: FirebaseAuth.instance, firestore: Firestore.instance);
   final AppMiddleware middleware = AppMiddleware(authApi: auth);
   final Store<AppState> store = Store<AppState>(
     reducer,

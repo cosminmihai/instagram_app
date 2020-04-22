@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:instagram_app/src/actions/initialize_app.dart';
 import 'package:instagram_app/src/actions/login.dart';
@@ -20,31 +19,11 @@ class AppMiddleware extends MiddlewareClass<AppState> {
   Future<void> call(Store<AppState> store, dynamic action, NextDispatcher next) async {
     next(action);
     if (action is InitializeApp) {
-      final FirebaseUser firebaseUser = await authApi.getUser();
-      if (firebaseUser == null) {
-        store.dispatch(InitializeAppSuccessful(null));
-      } else {
-        final AppUser appUser = AppUser(
-          uid: firebaseUser.uid,
-          displayName: firebaseUser.displayName,
-          username: null,
-          email: firebaseUser.email,
-          birthDate: null,
-          photoUrl: firebaseUser.photoUrl,
-        );
-        store.dispatch(InitializeAppSuccessful(appUser));
-      }
+      final AppUser user = await authApi.getUser();
+      store.dispatch(InitializeAppSuccessful(user));
     } else if (action is Login) {
-      final FirebaseUser firebaseUser = await authApi.login(action.email, action.password);
-      final AppUser appUser = AppUser(
-        uid: firebaseUser.uid,
-        displayName: firebaseUser.displayName,
-        username: null,
-        email: firebaseUser.email,
-        birthDate: null,
-        photoUrl: firebaseUser.photoUrl,
-      );
-      store.dispatch(LoginSuccessful(appUser));
+      final AppUser user = await authApi.login(action.email, action.password);
+      store.dispatch(LoginSuccessful(user));
     } else if (action is LogOut) {
       await authApi.logOut();
       store.dispatch(LogOutSuccessful());
@@ -54,19 +33,8 @@ class AppMiddleware extends MiddlewareClass<AppState> {
       store.dispatch(successfulAction);
       action.actionResult(successfulAction);
     } else if (action is Registration) {
-      final FirebaseUser firebaseUser = await authApi.register(
-        action.email,
-        action.password,
-      );
-      final AppUser appUser = AppUser(
-        uid: firebaseUser.uid,
-        displayName: firebaseUser.displayName,
-        username: action.userName,
-        email: firebaseUser.email,
-        birthDate: action.birthDate,
-        photoUrl: firebaseUser.photoUrl,
-      );
-      final RegistrationSuccessful registrationSuccessful = RegistrationSuccessful(appUser);
+      final AppUser user = await authApi.register(action.email, action.password);
+      final RegistrationSuccessful registrationSuccessful = RegistrationSuccessful(user);
       store.dispatch(registrationSuccessful);
       action.result(registrationSuccessful);
     }

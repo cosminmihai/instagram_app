@@ -6,6 +6,11 @@ import 'package:instagram_app/src/actions/initialize_app.dart';
 import 'package:instagram_app/src/data/authentication_api.dart';
 import 'package:instagram_app/src/middlewere/app_middlewere.dart';
 import 'package:instagram_app/src/models/app_state.dart';
+import 'package:instagram_app/src/presentation/SignUp_screens/birthdate_screen4.dart';
+import 'package:instagram_app/src/presentation/SignUp_screens/email_phone_screen1.dart';
+import 'package:instagram_app/src/presentation/SignUp_screens/name_screen2.dart';
+import 'package:instagram_app/src/presentation/SignUp_screens/password_screeen3.dart';
+import 'package:instagram_app/src/presentation/SignUp_screens/welcome_screen5.dart';
 import 'package:instagram_app/src/presentation/forgot_password.dart';
 import 'package:instagram_app/src/presentation/home_page.dart';
 import 'package:instagram_app/src/presentation/login_page.dart';
@@ -45,6 +50,11 @@ class InstagramClone extends StatelessWidget {
           'homepage': (BuildContext context) => HomePage(),
           'forgotPassword': (BuildContext context) => ForgotPasswordPage(),
           'registerPage': (BuildContext context) => const RegisterPage(),
+          'signUpEmailPhone': (BuildContext context) => const SignUpEmailPhone(),
+          'signUpName': (BuildContext context) => const SignUpName(),
+          'signUpPassword': (BuildContext context) => const SignUpPassword(),
+          'signUpBirthDate': (BuildContext context) => const SignUpBirthDate(),
+          'signUpWelcome': (BuildContext context) => const SignUpWelcome()
         },
       ),
     );

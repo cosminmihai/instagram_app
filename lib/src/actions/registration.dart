@@ -12,7 +12,7 @@ class Registration {
   });
 
   final String userName;
-  final String birthDate;
+  final DateTime birthDate;
   final String email;
   final String password;
   final ActionResult result;

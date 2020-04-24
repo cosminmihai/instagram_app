@@ -10,8 +10,6 @@ class SignUpWelcome extends StatefulWidget {
 }
 
 class _SignUpWelcomeState extends State<SignUpWelcome> {
-  TextEditingController name = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,9 +44,7 @@ class _SignUpWelcomeState extends State<SignUpWelcome> {
               elevation: 0,
               color: Colors.blue,
               onPressed: () async {
-                if (name.text.isNotEmpty) {
-                  await Navigator.pushNamed(context, 'signUpPassword');
-                }
+                await Navigator.pushNamed(context, 'signUpPassword');
               },
               child: const Text('Next'),
             ),

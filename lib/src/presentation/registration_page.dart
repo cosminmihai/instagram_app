@@ -99,7 +99,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 StoreProvider.of<AppState>(context).dispatch(
                   Registration(
                     email: email.text,
-                    birthDate: birdDate.text,
+                    birthDate: null,
                     password: password.text,
                     userName: userName.text,
                     result: _onResult,

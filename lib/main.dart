@@ -51,8 +51,8 @@ class InstagramClone extends StatelessWidget {
           'forgotPassword': (BuildContext context) => ForgotPasswordPage(),
           'registerPage': (BuildContext context) => const RegisterPage(),
           'signUpEmailPhone': (BuildContext context) => const SignUpEmailPhone(),
-          'signUpName': (BuildContext context) => const SignUpName(),
-          'signUpPassword': (BuildContext context) => const SignUpPassword(),
+          'signUpName': (BuildContext context) => SignUpName(),
+          'signUpPassword': (BuildContext context) => SignUpPassword(),
           'signUpBirthDate': (BuildContext context) => const SignUpBirthDate(),
           'signUpWelcome': (BuildContext context) => const SignUpWelcome()
         },

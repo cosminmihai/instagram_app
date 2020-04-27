@@ -1,17 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
 class AppUser {
-  factory AppUser.fromJson(Map<String, dynamic> json) {
-    return AppUser(
-      uid: json['uid'],
-      displayName: json['displayName'],
-      username: json['username'],
-      email: json['email'],
-      birthDate: json['birthDate'],
-      photoUrl: json['photoUrl'],
-    );
-  }
-
   AppUser({
     @required this.uid,
     @required this.displayName,
@@ -21,11 +10,22 @@ class AppUser {
     @required this.photoUrl,
   });
 
+  factory AppUser.fromJson(Map<String, dynamic> json) {
+    return AppUser(
+      uid: json['uid'],
+      displayName: json['displayName'],
+      username: json['username'],
+      email: json['email'],
+      birthDate: json['birthDate'] != null ? DateTime.fromMillisecondsSinceEpoch(json['birthDate']) : null,
+      photoUrl: json['photoUrl'],
+    );
+  }
+
   final String uid;
   final String displayName;
   final String username;
   final String email;
-  final String birthDate;
+  final DateTime birthDate;
   final String photoUrl;
 
   Map<String, dynamic> get json {
@@ -34,7 +34,7 @@ class AppUser {
       'displayName': displayName,
       'username': username,
       'email': email,
-      'birthDate': birthDate,
+      'birthDate': birthDate?.millisecondsSinceEpoch,
       'photoUrl': photoUrl,
     };
   }

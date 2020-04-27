@@ -85,7 +85,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       recognizer: TapGestureRecognizer()
                         ..onTap = () {
-                          Navigator.pushNamed(context, 'signUpEmailPhone');
+                          Navigator.pushNamed(context, 'signUpPage');
                         },
                     ),
                   ],

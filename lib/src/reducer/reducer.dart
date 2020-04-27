@@ -2,20 +2,40 @@ import 'package:instagram_app/src/actions/initialize_app.dart';
 import 'package:instagram_app/src/actions/login.dart';
 import 'package:instagram_app/src/actions/logout.dart';
 import 'package:instagram_app/src/actions/registration.dart';
+import 'package:instagram_app/src/actions/update_registration_info.dart';
 import 'package:instagram_app/src/models/app_state.dart';
+import 'package:redux/redux.dart';
 
 AppState reducer(AppState state, dynamic action) {
-  if (action is InitializeAppSuccessful) {
-    return state.copyWith(user: action.user);
-  } else if (action is LoginSuccessful) {
-    return state.copyWith(user: action.user);
-  } else if (action is LogOutSuccessful) {
-    return const AppState();
-  } else if (action is RegistrationSuccessful) {
-    return state.copyWith(user: action.user);
-  } else if (action is LogOutSuccessful) {
-    return const AppState();
-  } else {
-    return state;
-  }
+  final AppState result = _reducer(state, action);
+  print('${action.runtimeType} => $result');
+  return result;
+}
+
+Reducer<AppState> _reducer = combineReducers<AppState>(<Reducer<AppState>>[
+  TypedReducer<AppState, InitializeAppSuccessful>(_initializeAppSuccessful),
+  TypedReducer<AppState, LoginSuccessful>(_loginSuccessful),
+  TypedReducer<AppState, LogOutSuccessful>(_logoutSuccessful),
+  TypedReducer<AppState, RegistrationSuccessful>(_signUpSuccessful),
+  TypedReducer<AppState, UpdateRegistrationInfo>(_updateRegistrationInfo),
+]);
+
+AppState _initializeAppSuccessful(AppState state, InitializeAppSuccessful action) {
+  return state.copyWith(user: action.user);
+}
+
+AppState _loginSuccessful(AppState state, LoginSuccessful action) {
+  return state.copyWith(user: action.user);
+}
+
+AppState _logoutSuccessful(AppState state, LogOutSuccessful action) {
+  return const AppState();
+}
+
+AppState _signUpSuccessful(AppState state, RegistrationSuccessful action) {
+  return state.copyWith(user: action.user);
+}
+
+AppState _updateRegistrationInfo(AppState state, UpdateRegistrationInfo action) {
+  return state.copyWith(info: action.info);
 }

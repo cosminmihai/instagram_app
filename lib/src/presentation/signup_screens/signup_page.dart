@@ -16,6 +16,10 @@ class SignUpPage extends StatefulWidget {
 class _SignUpPageState extends State<SignUpPage> {
   final PageController controller = PageController();
 
+  void nextPage() {
+    controller.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.linear);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,36 +31,26 @@ class _SignUpPageState extends State<SignUpPage> {
         child: Column(
           children: <Widget>[
             Flexible(
-              child: PageView(
-                controller: controller,
-                physics: const NeverScrollableScrollPhysics(),
-                children: <Widget>[
-                  SignUpEmailPhone(
-                    onNext: () {
-                      controller.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.linear);
-                    },
-                  ),
-                  SignUpName(
-                    onNext: () {
-                      controller.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.linear);
-                    },
-                  ),
-                  SignUpPassword(
-                    onNext: () {
-                      controller.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.linear);
-                    },
-                  ),
-                  SignUpBirthDate(
-                    onNext: () {
-                      controller.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.linear);
-                    },
-                  ),
-                  SignUpWelcome(
-                    onNext: () {
-                      controller.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.linear);
-                    },
-                  ),
-                ],
+              child: Form(
+                child: PageView(
+                  controller: controller,
+                  physics: const NeverScrollableScrollPhysics(),
+                  children: <Widget>[
+                    SignUpEmailPhone(onNext: nextPage),
+                    SignUpName(
+                      onNext: nextPage,
+                    ),
+                    SignUpPassword(
+                      onNext: nextPage,
+                    ),
+                    SignUpBirthDate(
+                      onNext: nextPage,
+                    ),
+                    SignUpWelcome(
+                      onNext: nextPage,
+                    ),
+                  ],
+                ),
               ),
             ),
             const Divider(),

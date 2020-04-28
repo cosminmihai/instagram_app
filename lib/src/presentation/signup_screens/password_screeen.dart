@@ -5,6 +5,7 @@ import 'package:instagram_app/src/actions/update_registration_info.dart';
 import 'package:instagram_app/src/containers/registration_info_container.dart';
 import 'package:instagram_app/src/models/app_state.dart';
 import 'package:instagram_app/src/models/registration_info.dart';
+import 'package:password_strength/password_strength.dart';
 
 class SignUpPassword extends StatefulWidget {
   const SignUpPassword({Key key, @required this.onNext}) : super(key: key);
@@ -50,7 +51,7 @@ class _SignUpPasswordState extends State<SignUpPassword> {
               const SizedBox(height: 16.0),
               Container(
                 padding: const EdgeInsetsDirectional.only(start: 16.0),
-                child: TextField(
+                child: TextFormField(
                   controller: password,
                   keyboardType: TextInputType.visiblePassword,
                   obscureText: true,
@@ -61,6 +62,13 @@ class _SignUpPasswordState extends State<SignUpPassword> {
                   onChanged: (String value) {
                     StoreProvider.of<AppState>(context)
                         .dispatch(UpdateRegistrationInfo(info.copyWith(password: value)));
+                  },
+                  validator: (String value) {
+                    if (estimatePasswordStrength(value) < 0.3) {
+                      return 'Password too weak';
+                    } else {
+                      return null;
+                    }
                   },
                 ),
               ),
@@ -83,8 +91,10 @@ class _SignUpPasswordState extends State<SignUpPassword> {
                 child: RaisedButton(
                   elevation: 0.0,
                   onPressed: () {
-                    FocusScope.of(context).requestFocus(FocusNode());
-                    widget.onNext();
+                    if (Form.of(context).validate()) {
+                      FocusScope.of(context).requestFocus(FocusNode());
+                      widget.onNext();
+                    }
                   },
                   child: const Text('Next'),
                 ),

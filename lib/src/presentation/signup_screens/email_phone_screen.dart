@@ -5,6 +5,7 @@ import 'package:instagram_app/src/actions/update_registration_info.dart';
 import 'package:instagram_app/src/containers/registration_info_container.dart';
 import 'package:instagram_app/src/models/app_state.dart';
 import 'package:instagram_app/src/models/registration_info.dart';
+import 'package:email_validator/email_validator.dart';
 
 class SignUpEmailPhone extends StatefulWidget {
   const SignUpEmailPhone({Key key, @required this.onNext}) : super(key: key);
@@ -23,7 +24,7 @@ class _SignUpEmailPhoneState extends State<SignUpEmailPhone> with SingleTickerPr
   @override
   void initState() {
     super.initState();
-    tabController = TabController(length: 2, vsync: this) //
+    tabController = TabController(length: 2, vsync: this, initialIndex: 1) //
       ..addListener(() {
         setState(() {});
         FocusScope.of(context).requestFocus(FocusNode());
@@ -73,7 +74,7 @@ class _SignUpEmailPhoneState extends State<SignUpEmailPhone> with SingleTickerPr
           const SizedBox(height: 24.0),
           RegistrationInfoContainer(
             builder: (BuildContext context, RegistrationInfo info) {
-              return TextField(
+              return TextFormField(
                 controller: isPhone ? phone : email,
                 keyboardType: isPhone ? TextInputType.phone : TextInputType.emailAddress,
                 decoration: InputDecoration(
@@ -88,6 +89,25 @@ class _SignUpEmailPhoneState extends State<SignUpEmailPhone> with SingleTickerPr
                     StoreProvider.of<AppState>(context).dispatch(UpdateRegistrationInfo(info.copyWith(email: value)));
                   }
                 },
+                validator: (String value) {
+                  if (isPhone) {
+                    if (value.length < 10) {
+                      return 'Your phone number is to sort.';
+                    } else if (!value.startsWith('07')) {
+                      return 'Phone number is not from Romania.';
+                    } else if (value.length > 10) {
+                      return 'Your number is to long.';
+                    } else {
+                      return null;
+                    }
+                  } else {
+                    if (!EmailValidator.validate(value)) {
+                      return 'Enter an valid email address';
+                    } else {
+                      return null;
+                    }
+                  }
+                },
               );
             },
           ),
@@ -97,8 +117,10 @@ class _SignUpEmailPhoneState extends State<SignUpEmailPhone> with SingleTickerPr
             child: RaisedButton(
               elevation: 0.0,
               onPressed: () {
-                FocusScope.of(context).requestFocus(FocusNode());
-                widget.onNext();
+                if (Form.of(context).validate()) {
+                  FocusScope.of(context).requestFocus(FocusNode());
+                  widget.onNext();
+                }
               },
               child: const Text('Next'),
             ),

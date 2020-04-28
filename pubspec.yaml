@@ -14,7 +14,8 @@ dependencies:
   flutter_redux: ^0.6.0
   cloud_firestore: ^0.13.5
   intl: ^0.16.1
-
+  email_validator: ^1.0.4
+  password_strength: ^0.1.2
 
 dev_dependencies:
   flutter_test:

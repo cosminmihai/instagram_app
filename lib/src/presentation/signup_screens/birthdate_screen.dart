@@ -27,6 +27,7 @@ class _SignUpBirthDateState extends State<SignUpBirthDate> {
       child: RegistrationInfoContainer(
         builder: (BuildContext context, RegistrationInfo info) {
           final DateTime birthDate = info.birthDate ?? DateTime.now();
+          final int year = DateTime.now().difference(birthDate).inDays ~/ 365;
           final DateFormat format = DateFormat.yMMMMd();
           return Column(
             children: <Widget>[
@@ -70,9 +71,19 @@ class _SignUpBirthDateState extends State<SignUpBirthDate> {
                   borderSide: BorderSide(
                     color: Theme.of(context).accentColor,
                   ),
-                  child: Container(
-                    alignment: AlignmentDirectional.centerStart,
-                    child: Text(format.format(birthDate)),
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Container(
+                          alignment: AlignmentDirectional.centerStart,
+                          child: Text(format.format(birthDate)),
+                        ),
+                      ),
+                      Text(
+                        ' ${year}',
+                        style: TextStyle(color: year <= 4 ? Colors.red : Colors.white),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -92,7 +103,7 @@ class _SignUpBirthDateState extends State<SignUpBirthDate> {
               Container(
                 alignment: AlignmentDirectional.centerStart,
                 child: const Text(
-                  'Use your own birth date, even if this account is for bussiness a pet or something else.',
+                  'Use your own birth date, even if this account is for business a pet or something else.',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 12.0,
@@ -107,24 +118,31 @@ class _SignUpBirthDateState extends State<SignUpBirthDate> {
                 child: RaisedButton(
                   elevation: 0.0,
                   onPressed: () {
-                    FocusScope.of(context).requestFocus(FocusNode());
-                    widget.onNext();
+                    if (year > 4) {
+                      FocusScope.of(context).requestFocus(FocusNode());
+                      widget.onNext();
+                    }
                   },
                   child: const Text('Next'),
                 ),
               ),
               const SizedBox(height: 16.0),
-              Container(
-                height: MediaQuery.of(context).size.height * .20,
-                child: CupertinoDatePicker(
-                  backgroundColor: Colors.grey[850],
-                  mode: CupertinoDatePickerMode.date,
-                  initialDateTime: DateTime.now(),
-                  maximumDate: DateTime.now(),
-                  onDateTimeChanged: (DateTime value) {
-                    StoreProvider.of<AppState>(context)
-                        .dispatch(UpdateRegistrationInfo(info.copyWith(birthDate: value)));
-                  },
+              Theme(
+                data: Theme.of(context).copyWith(
+                    cupertinoOverrideTheme:
+                        CupertinoThemeData(textTheme: CupertinoTextThemeData(primaryColor: Colors.white))),
+                child: Container(
+                  height: MediaQuery.of(context).size.height * .20,
+                  child: CupertinoDatePicker(
+                    backgroundColor: Colors.transparent,
+                    mode: CupertinoDatePickerMode.date,
+                    initialDateTime: DateTime.now(),
+                    maximumDate: DateTime.now(),
+                    onDateTimeChanged: (DateTime value) {
+                      StoreProvider.of<AppState>(context)
+                          .dispatch(UpdateRegistrationInfo(info.copyWith(birthDate: value)));
+                    },
+                  ),
                 ),
               ),
             ],

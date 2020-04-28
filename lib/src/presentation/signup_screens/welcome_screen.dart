@@ -1,8 +1,8 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:instagram_app/src/containers/user_container.dart';
-import 'package:instagram_app/src/models/app_user.dart';
+import 'package:instagram_app/src/containers/registration_info_container.dart';
+import 'package:instagram_app/src/models/registration_info.dart';
 
 class SignUpWelcome extends StatefulWidget {
   const SignUpWelcome({Key key, @required this.onNext}) : super(key: key);
@@ -16,17 +16,17 @@ class _SignUpWelcomeState extends State<SignUpWelcome> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: ListView(
-        padding: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.all(20.0),
+      child: Column(
         children: <Widget>[
           const SizedBox(height: 26.0),
-          UserContainer(
-            builder: (BuildContext context, AppUser user) {
+          RegistrationInfoContainer(
+            builder: (BuildContext context, RegistrationInfo info) {
               return Text(
-                'Welcome to Instagram, ${user?.username}',
+                'Welcome to Instagram, ${info?.username}',
                 textAlign: TextAlign.center,
                 style: const TextStyle(
-                  fontSize: 20.0,
+                  fontSize: 23.0,
                   fontWeight: FontWeight.w300,
                 ),
               );
@@ -40,22 +40,19 @@ class _SignUpWelcomeState extends State<SignUpWelcome> {
               style: TextStyle(fontSize: 16.0, color: Colors.grey),
             ),
           ),
-          const SizedBox(height: 20.0),
-          const SizedBox(height: 20.0),
-          const SizedBox(
-            height: 20.0,
+          const SizedBox(height: 24.0),
+          Container(
+            width: MediaQuery.of(context).size.width,
+            child: RaisedButton(
+              elevation: 0,
+              color: Colors.blue,
+              onPressed: () {
+                FocusScope.of(context).requestFocus(FocusNode());
+                widget.onNext();
+              },
+              child: const Text('Next'),
+            ),
           ),
-          RaisedButton(
-            elevation: 0,
-            color: Colors.blue,
-            onPressed: () {
-              FocusScope.of(context).requestFocus(FocusNode());
-              widget.onNext();
-            },
-            child: const Text('Next'),
-          ),
-          const SizedBox(height: 20.0),
-          const Divider(thickness: 1.0),
           const SizedBox(height: 20.0),
           Container(
             alignment: AlignmentDirectional.bottomCenter,

@@ -21,9 +21,7 @@ void main() {
   final Store<AppState> store = Store<AppState>(
     reducer,
     initialState: const AppState(),
-    middleware: <Middleware<AppState>>[
-      middleware,
-    ],
+    middleware: middleware.middleware,
   )..dispatch(InitializeApp());
   runApp(InstagramClone(store: store));
 }

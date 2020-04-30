@@ -1,11 +1,15 @@
 library registration_info;
 
 import 'package:built_value/built_value.dart';
+import 'package:built_value/serializer.dart';
+import 'package:instagram_app/src/models/serializers.dart';
 
 part 'registration_info.g.dart';
 
 abstract class RegistrationInfo implements Built<RegistrationInfo, RegistrationInfoBuilder> {
   factory RegistrationInfo([void Function(RegistrationInfoBuilder b) updates]) = _$RegistrationInfo;
+
+  factory RegistrationInfo.fromJson(Map<dynamic, dynamic> json) => serializers.deserializeWith(serializer, json);
 
   RegistrationInfo._();
 
@@ -35,4 +39,8 @@ abstract class RegistrationInfo implements Built<RegistrationInfo, RegistrationI
 
   @nullable
   bool get savePassword;
+
+  Map<String, dynamic> get json => serializers.serializeWith(serializer, this);
+
+  static Serializer<RegistrationInfo> get serializer => _$registrationInfoSerializer;
 }

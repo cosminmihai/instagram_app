@@ -6,6 +6,132 @@ part of registration_info;
 // BuiltValueGenerator
 // **************************************************************************
 
+Serializer<RegistrationInfo> _$registrationInfoSerializer =
+    new _$RegistrationInfoSerializer();
+
+class _$RegistrationInfoSerializer
+    implements StructuredSerializer<RegistrationInfo> {
+  @override
+  final Iterable<Type> types = const [RegistrationInfo, _$RegistrationInfo];
+  @override
+  final String wireName = 'RegistrationInfo';
+
+  @override
+  Iterable<Object> serialize(Serializers serializers, RegistrationInfo object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object>[];
+    if (object.email != null) {
+      result
+        ..add('email')
+        ..add(serializers.serialize(object.email,
+            specifiedType: const FullType(String)));
+    }
+    if (object.phone != null) {
+      result
+        ..add('phone')
+        ..add(serializers.serialize(object.phone,
+            specifiedType: const FullType(String)));
+    }
+    if (object.verificationId != null) {
+      result
+        ..add('verificationId')
+        ..add(serializers.serialize(object.verificationId,
+            specifiedType: const FullType(String)));
+    }
+    if (object.smsCode != null) {
+      result
+        ..add('smsCode')
+        ..add(serializers.serialize(object.smsCode,
+            specifiedType: const FullType(String)));
+    }
+    if (object.displayName != null) {
+      result
+        ..add('displayName')
+        ..add(serializers.serialize(object.displayName,
+            specifiedType: const FullType(String)));
+    }
+    if (object.password != null) {
+      result
+        ..add('password')
+        ..add(serializers.serialize(object.password,
+            specifiedType: const FullType(String)));
+    }
+    if (object.birthDate != null) {
+      result
+        ..add('birthDate')
+        ..add(serializers.serialize(object.birthDate,
+            specifiedType: const FullType(DateTime)));
+    }
+    if (object.username != null) {
+      result
+        ..add('username')
+        ..add(serializers.serialize(object.username,
+            specifiedType: const FullType(String)));
+    }
+    if (object.savePassword != null) {
+      result
+        ..add('savePassword')
+        ..add(serializers.serialize(object.savePassword,
+            specifiedType: const FullType(bool)));
+    }
+    return result;
+  }
+
+  @override
+  RegistrationInfo deserialize(
+      Serializers serializers, Iterable<Object> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new RegistrationInfoBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current as String;
+      iterator.moveNext();
+      final dynamic value = iterator.current;
+      switch (key) {
+        case 'email':
+          result.email = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'phone':
+          result.phone = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'verificationId':
+          result.verificationId = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'smsCode':
+          result.smsCode = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'displayName':
+          result.displayName = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'password':
+          result.password = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'birthDate':
+          result.birthDate = serializers.deserialize(value,
+              specifiedType: const FullType(DateTime)) as DateTime;
+          break;
+        case 'username':
+          result.username = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'savePassword':
+          result.savePassword = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool;
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
 class _$RegistrationInfo extends RegistrationInfo {
   @override
   final String email;

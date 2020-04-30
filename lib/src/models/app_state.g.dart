@@ -6,6 +6,60 @@ part of app_state;
 // BuiltValueGenerator
 // **************************************************************************
 
+Serializer<AppState> _$appStateSerializer = new _$AppStateSerializer();
+
+class _$AppStateSerializer implements StructuredSerializer<AppState> {
+  @override
+  final Iterable<Type> types = const [AppState, _$AppState];
+  @override
+  final String wireName = 'AppState';
+
+  @override
+  Iterable<Object> serialize(Serializers serializers, AppState object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object>[];
+    if (object.user != null) {
+      result
+        ..add('user')
+        ..add(serializers.serialize(object.user,
+            specifiedType: const FullType(AppUser)));
+    }
+    if (object.info != null) {
+      result
+        ..add('info')
+        ..add(serializers.serialize(object.info,
+            specifiedType: const FullType(RegistrationInfo)));
+    }
+    return result;
+  }
+
+  @override
+  AppState deserialize(Serializers serializers, Iterable<Object> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new AppStateBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current as String;
+      iterator.moveNext();
+      final dynamic value = iterator.current;
+      switch (key) {
+        case 'user':
+          result.user.replace(serializers.deserialize(value,
+              specifiedType: const FullType(AppUser)) as AppUser);
+          break;
+        case 'info':
+          result.info.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(RegistrationInfo))
+              as RegistrationInfo);
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
 class _$AppState extends AppState {
   @override
   final AppUser user;

@@ -5,6 +5,7 @@ import 'package:instagram_app/src/actions/logout.dart';
 import 'package:instagram_app/src/actions/registration.dart';
 import 'package:instagram_app/src/actions/reserve_username.dart';
 import 'package:instagram_app/src/actions/reset_password.dart';
+import 'package:instagram_app/src/actions/send_sms.dart';
 import 'package:instagram_app/src/data/authentication_api.dart';
 import 'package:instagram_app/src/models/app_state.dart';
 import 'package:instagram_app/src/models/app_user.dart';
@@ -24,11 +25,13 @@ class AppMiddleware {
       TypedMiddleware<AppState, ResetPassword>(_resetPassword),
       TypedMiddleware<AppState, Registration>(_registration),
       TypedMiddleware<AppState, ReserveUsername>(_reserveUsername),
+      TypedMiddleware<AppState, SendSms>(_sendSms),
     ];
   }
 
   Future<void> _initializeApp(Store<AppState> store, InitializeApp action, NextDispatcher next) async {
     next(action);
+
     try {
       final AppUser user = await authApi.getUser();
       store.dispatch(InitializeAppSuccessful(user));
@@ -73,7 +76,7 @@ class AppMiddleware {
   Future<void> _registration(Store<AppState> store, Registration action, NextDispatcher next) async {
     next(action);
     try {
-      final AppUser user = await authApi.register(action.email, action.password);
+      final AppUser user = await authApi.register(store.state.info);
       final RegistrationSuccessful registrationSuccessful = RegistrationSuccessful(user);
       store.dispatch(registrationSuccessful);
       action.result(registrationSuccessful);
@@ -91,6 +94,22 @@ class AppMiddleware {
       store.dispatch(ReserveUsernameSuccessful(username));
     } catch (error) {
       store.dispatch(ReserveUsernameError(error));
+    }
+  }
+
+  Future<void> _sendSms(Store<AppState> store, SendSms action, NextDispatcher next) async {
+    next(action);
+
+    try {
+      final String verificationId = await authApi.sendSms(store.state.info.phone);
+      final SendSmsSuccessful successful = SendSmsSuccessful(verificationId);
+      store.dispatch(successful);
+      action.result(successful);
+    } catch (e) {
+      final SendSmsError error = SendSmsError(e);
+      store.dispatch(error);
+      action.result(error);
+      print(error.toString());
     }
   }
 }

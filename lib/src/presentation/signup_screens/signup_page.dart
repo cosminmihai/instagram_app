@@ -4,6 +4,7 @@ import 'package:instagram_app/src/presentation/signup_screens/birthdate_screen.d
 import 'package:instagram_app/src/presentation/signup_screens/email_phone_screen.dart';
 import 'package:instagram_app/src/presentation/signup_screens/name_screen.dart';
 import 'package:instagram_app/src/presentation/signup_screens/password_screeen.dart';
+import 'package:instagram_app/src/presentation/signup_screens/sms_code_screen.dart';
 import 'package:instagram_app/src/presentation/signup_screens/welcome_screen.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -15,6 +16,7 @@ class SignUpPage extends StatefulWidget {
 
 class _SignUpPageState extends State<SignUpPage> {
   final PageController controller = PageController();
+  RegisterType registerType = RegisterType.email;
 
   void nextPage() {
     controller.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.linear);
@@ -36,13 +38,17 @@ class _SignUpPageState extends State<SignUpPage> {
                   controller: controller,
                   physics: const NeverScrollableScrollPhysics(),
                   children: <Widget>[
-                    SignUpEmailPhone(onNext: nextPage),
-                    SignUpName(
+                    SignUpEmailPhone(
                       onNext: nextPage,
+                      onChanged: (RegisterType value) {
+                        setState(() {
+                          registerType = value;
+                        });
+                      },
                     ),
-                    SignUpPassword(
-                      onNext: nextPage,
-                    ),
+                    if (registerType == RegisterType.phone) SmsCodeScreen(onNext: nextPage),
+                    SignUpName(onNext: nextPage),
+                    if (registerType == RegisterType.email) SignUpPassword(onNext: nextPage),
                     SignUpBirthDate(
                       onNext: nextPage,
                     ),

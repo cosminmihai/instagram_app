@@ -39,7 +39,7 @@ class InstagramClone extends StatelessWidget {
         home: const Home(),
         theme: ThemeData.dark(),
         routes: <String, WidgetBuilder>{
-          'loginpage': (BuildContext context) => const LoginPage(),
+          'loginPage': (BuildContext context) => const LoginPage(),
           'homepage': (BuildContext context) => HomePage(),
           'forgotPassword': (BuildContext context) => ForgotPasswordPage(),
           'signUpPage': (BuildContext context) => const SignUpPage(),

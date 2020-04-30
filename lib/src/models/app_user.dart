@@ -6,6 +6,7 @@ class AppUser {
     @required this.displayName,
     @required this.username,
     @required this.email,
+    @required this.phone,
     @required this.birthDate,
     @required this.photoUrl,
   });
@@ -16,6 +17,7 @@ class AppUser {
       displayName: json['displayName'],
       username: json['username'],
       email: json['email'],
+      phone: json['phone'],
       birthDate: json['birthDate'] != null ? DateTime.fromMillisecondsSinceEpoch(json['birthDate']) : null,
       photoUrl: json['photoUrl'],
     );
@@ -25,6 +27,7 @@ class AppUser {
   final String displayName;
   final String username;
   final String email;
+  final String phone;
   final DateTime birthDate;
   final String photoUrl;
 
@@ -44,6 +47,7 @@ class AppUser {
     final String displayName,
     final String username,
     final String email,
+    final String phone,
     final String birthDate,
     final String photoUrl,
   }) {
@@ -52,6 +56,7 @@ class AppUser {
       displayName: displayName ?? this.displayName,
       username: username ?? this.username,
       email: email ?? this.email,
+      phone: phone ?? this.phone,
       birthDate: birthDate ?? this.birthDate,
       photoUrl: photoUrl ?? this.photoUrl,
     );
@@ -59,6 +64,6 @@ class AppUser {
 
   @override
   String toString() {
-    return 'AppUser{uid: $uid, displayName: $displayName, username: $username, email: $email, birthDate: $birthDate, photoUrl: $photoUrl}';
+    return 'AppUser{uid: $uid, displayName: $displayName, username: $username, email: $email, phone: $phone, birthDate: $birthDate, photoUrl: $photoUrl}';
   }
 }

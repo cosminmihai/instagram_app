@@ -3,6 +3,7 @@ import 'package:instagram_app/src/actions/login.dart';
 import 'package:instagram_app/src/actions/logout.dart';
 import 'package:instagram_app/src/actions/registration.dart';
 import 'package:instagram_app/src/actions/reserve_username.dart';
+import 'package:instagram_app/src/actions/send_sms.dart';
 import 'package:instagram_app/src/actions/update_registration_info.dart';
 import 'package:instagram_app/src/models/app_state.dart';
 import 'package:instagram_app/src/models/registration_info.dart';
@@ -21,6 +22,7 @@ Reducer<AppState> _reducer = combineReducers<AppState>(<Reducer<AppState>>[
   TypedReducer<AppState, RegistrationSuccessful>(_signUpSuccessful),
   TypedReducer<AppState, UpdateRegistrationInfo>(_updateRegistrationInfo),
   TypedReducer<AppState, ReserveUsernameSuccessful>(_reserveUsernameSuccessful),
+  TypedReducer<AppState, SendSmsSuccessful>(_sendSmsSuccessful),
 ]);
 
 AppState _initializeAppSuccessful(AppState state, InitializeAppSuccessful action) {
@@ -45,5 +47,10 @@ AppState _updateRegistrationInfo(AppState state, UpdateRegistrationInfo action) 
 
 AppState _reserveUsernameSuccessful(AppState state, ReserveUsernameSuccessful action) {
   final RegistrationInfo registrationInfo = state.info.copyWith(username: action.username);
+  return state.copyWith(info: registrationInfo);
+}
+
+AppState _sendSmsSuccessful(AppState state, SendSmsSuccessful action) {
+  final RegistrationInfo registrationInfo = state.info.copyWith(verificationId: action.verificationId);
   return state.copyWith(info: registrationInfo);
 }

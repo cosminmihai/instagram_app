@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:instagram_app/src/actions/send_sms.dart';
 import 'package:instagram_app/src/actions/update_registration_info.dart';
 import 'package:instagram_app/src/containers/registration_info_container.dart';
 import 'package:instagram_app/src/models/app_state.dart';
 import 'package:instagram_app/src/models/registration_info.dart';
 import 'package:email_validator/email_validator.dart';
 
-class SignUpEmailPhone extends StatefulWidget {
-  const SignUpEmailPhone({Key key, @required this.onNext}) : super(key: key);
+enum RegisterType { email, phone }
 
+class SignUpEmailPhone extends StatefulWidget {
+  const SignUpEmailPhone({Key key, @required this.onNext, @required this.onChanged}) : super(key: key);
+  final ValueChanged<RegisterType> onChanged;
   final VoidCallback onNext;
 
   @override
@@ -26,9 +29,36 @@ class _SignUpEmailPhoneState extends State<SignUpEmailPhone> with SingleTickerPr
     super.initState();
     tabController = TabController(length: 2, vsync: this, initialIndex: 1) //
       ..addListener(() {
+        widget.onChanged(tabController.index == 0 ? RegisterType.phone : RegisterType.email);
         setState(() {});
+        Form.of(context).reset();
         FocusScope.of(context).requestFocus(FocusNode());
       });
+  }
+
+  void _onSmsSent(dynamic action) {
+    if (action is SendSmsSuccessful) {
+      FocusScope.of(context).requestFocus(FocusNode());
+      widget.onNext();
+    } else if (action is SendSmsError) {
+      showDialog<void>(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Sms code error'),
+            content: Text(action.error.toString()),
+            actions: <Widget>[
+              FlatButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
 
   @override
@@ -83,7 +113,8 @@ class _SignUpEmailPhoneState extends State<SignUpEmailPhone> with SingleTickerPr
                 ),
                 onChanged: (String value) {
                   if (isPhone) {
-                    // todo: add phone registration
+                    info ??= const RegistrationInfo();
+                    StoreProvider.of<AppState>(context).dispatch(UpdateRegistrationInfo(info.copyWith(phone: value)));
                   } else {
                     info ??= const RegistrationInfo();
                     StoreProvider.of<AppState>(context).dispatch(UpdateRegistrationInfo(info.copyWith(email: value)));
@@ -103,9 +134,8 @@ class _SignUpEmailPhoneState extends State<SignUpEmailPhone> with SingleTickerPr
                   } else {
                     if (!EmailValidator.validate(value)) {
                       return 'Enter an valid email address';
-                    } else {
-                      return null;
                     }
+                    return null;
                   }
                 },
               );
@@ -118,8 +148,12 @@ class _SignUpEmailPhoneState extends State<SignUpEmailPhone> with SingleTickerPr
               elevation: 0.0,
               onPressed: () {
                 if (Form.of(context).validate()) {
-                  FocusScope.of(context).requestFocus(FocusNode());
-                  widget.onNext();
+                  if (isPhone) {
+                    StoreProvider.of<AppState>(context).dispatch(SendSms(_onSmsSent));
+                  } else {
+                    FocusScope.of(context).requestFocus(FocusNode());
+                    widget.onNext();
+                  }
                 }
               },
               child: const Text('Next'),

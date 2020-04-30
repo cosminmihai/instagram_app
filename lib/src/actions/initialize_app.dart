@@ -1,15 +1,48 @@
+library initialize_app;
+
+import 'package:built_value/built_value.dart';
+import 'package:instagram_app/src/actions/actions.dart';
 import 'package:instagram_app/src/models/app_user.dart';
 
-class InitializeApp {}
+part 'initialize_app.g.dart';
 
-class InitializeAppSuccessful {
-  InitializeAppSuccessful(this.user);
+abstract class InitializeApp //
+    implements
+        Built<InitializeApp, InitializeAppBuilder>,
+        AppAction //
+{
+  factory InitializeApp([void Function(InitializeAppBuilder b) updates]) = _$InitializeApp;
 
-  final AppUser user;
+  InitializeApp._();
 }
 
-class InitializeAppError {
-  InitializeAppError(this.error);
+abstract class InitializeAppSuccessful //
+    implements
+        Built<InitializeAppSuccessful, InitializeAppSuccessfulBuilder>,
+        AppAction //
+{
+  factory InitializeAppSuccessful(AppUser user) {
+    return _$InitializeAppSuccessful((InitializeAppSuccessfulBuilder b) {
+      b.user = user.toBuilder();
+    });
+  }
 
-  final Object error;
+  InitializeAppSuccessful._();
+
+  AppUser get user;
+}
+
+abstract class InitializeAppError //
+    implements
+        Built<InitializeAppError, InitializeAppErrorBuilder>,
+        ErrorAction //
+{
+  factory InitializeAppError(Object error) {
+    return _$InitializeAppError((InitializeAppErrorBuilder b) => b.error = error);
+  }
+
+  InitializeAppError._();
+
+  @override
+  Object get error;
 }

@@ -1,20 +1,55 @@
+library registration;
+
+import 'package:built_value/built_value.dart';
+import 'package:instagram_app/src/actions/actions.dart';
 import 'package:instagram_app/src/actions/reset_password.dart';
 import 'package:instagram_app/src/models/app_user.dart';
 
-class Registration {
-  const Registration(this.result);
+part 'registration.g.dart';
 
-  final ActionResult result;
+abstract class Registration //
+    implements
+        Built<Registration, RegistrationBuilder>,
+        AppAction //
+{
+  factory Registration(ActionResult result) {
+    return _$Registration((RegistrationBuilder b) {
+      b.result = result;
+    });
+  }
+
+  Registration._();
+
+  ActionResult get result;
 }
 
-class RegistrationSuccessful {
-  RegistrationSuccessful(this.user);
+abstract class RegistrationSuccessful //
+    implements
+        Built<RegistrationSuccessful, RegistrationSuccessfulBuilder>,
+        AppAction //
+{
+  factory RegistrationSuccessful(AppUser user) {
+    return _$RegistrationSuccessful((RegistrationSuccessfulBuilder b) {
+      b.user = user.toBuilder();
+    });
+  }
 
-  final AppUser user;
+  RegistrationSuccessful._();
+
+  AppUser get user;
 }
 
-class RegistrationError {
-  RegistrationError(this.error);
+abstract class RegistrationError //
+    implements
+        Built<RegistrationError, RegistrationErrorBuilder>,
+        ErrorAction //
+{
+  factory RegistrationError(Object error) {
+    return _$RegistrationError((RegistrationErrorBuilder b) => b.error = error);
+  }
 
-  final Object error;
+  RegistrationError._();
+
+  @override
+  Object get error;
 }

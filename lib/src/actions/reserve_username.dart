@@ -1,13 +1,47 @@
-class ReserveUsername {}
+library reserve_username;
 
-class ReserveUsernameSuccessful {
-  ReserveUsernameSuccessful(this.username);
+import 'package:built_value/built_value.dart';
+import 'package:instagram_app/src/actions/actions.dart';
 
-  final String username;
+part 'reserve_username.g.dart';
+
+abstract class ReserveUsername //
+    implements
+        Built<ReserveUsername, ReserveUsernameBuilder>,
+        AppAction //
+{
+  factory ReserveUsername([void Function(ReserveUsernameBuilder b) updates]) = _$ReserveUsername;
+
+  ReserveUsername._();
 }
 
-class ReserveUsernameError {
-  ReserveUsernameError(this.error);
+abstract class ReserveUsernameSuccessful //
+    implements
+        Built<ReserveUsernameSuccessful, ReserveUsernameSuccessfulBuilder>,
+        AppAction //
+{
+  factory ReserveUsernameSuccessful(String username) {
+    return _$ReserveUsernameSuccessful((ReserveUsernameSuccessfulBuilder b) {
+      b.username = username;
+    });
+  }
 
-  final Object error;
+  ReserveUsernameSuccessful._();
+
+  String get username;
+}
+
+abstract class ReserveUsernameError //
+    implements
+        Built<ReserveUsernameError, ReserveUsernameErrorBuilder>,
+        ErrorAction //
+{
+  factory ReserveUsernameError(Object error) {
+    return _$ReserveUsernameError((ReserveUsernameErrorBuilder b) => b.error = error);
+  }
+
+  ReserveUsernameError._();
+
+  @override
+  Object get error;
 }

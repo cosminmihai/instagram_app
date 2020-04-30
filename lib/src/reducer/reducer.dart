@@ -1,3 +1,4 @@
+import 'package:instagram_app/src/actions/actions.dart';
 import 'package:instagram_app/src/actions/initialize_app.dart';
 import 'package:instagram_app/src/actions/login.dart';
 import 'package:instagram_app/src/actions/logout.dart';
@@ -10,6 +11,9 @@ import 'package:instagram_app/src/models/registration_info.dart';
 import 'package:redux/redux.dart';
 
 AppState reducer(AppState state, dynamic action) {
+  if (action is ErrorAction) {
+    print('error: ${action.error}');
+  }
   final AppState result = _reducer(state, action);
   print('${action.runtimeType} => $result');
   return result;

@@ -1,7 +1,23 @@
+library update_registration_info;
+
+import 'package:built_value/built_value.dart';
+import 'package:instagram_app/src/actions/actions.dart';
 import 'package:instagram_app/src/models/registration_info.dart';
 
-class UpdateRegistrationInfo {
-  const UpdateRegistrationInfo(this.info);
+part 'update_registration_info.g.dart';
 
-  final RegistrationInfo info;
+abstract class UpdateRegistrationInfo //
+    implements
+        Built<UpdateRegistrationInfo, UpdateRegistrationInfoBuilder>,
+        AppAction //
+{
+  factory UpdateRegistrationInfo(RegistrationInfo info) {
+    return _$UpdateRegistrationInfo((UpdateRegistrationInfoBuilder b) {
+      b.info = info.toBuilder();
+    });
+  }
+
+  UpdateRegistrationInfo._();
+
+  RegistrationInfo get info;
 }

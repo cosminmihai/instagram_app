@@ -2,7 +2,6 @@ library registration;
 
 import 'package:built_value/built_value.dart';
 import 'package:instagram_app/src/actions/actions.dart';
-import 'package:instagram_app/src/actions/reset_password.dart';
 import 'package:instagram_app/src/models/app_user.dart';
 
 part 'registration.g.dart';
@@ -26,7 +25,8 @@ abstract class Registration //
 abstract class RegistrationSuccessful //
     implements
         Built<RegistrationSuccessful, RegistrationSuccessfulBuilder>,
-        AppAction //
+        AppAction,
+        UserAction //
 {
   factory RegistrationSuccessful(AppUser user) {
     return _$RegistrationSuccessful((RegistrationSuccessfulBuilder b) {
@@ -36,6 +36,7 @@ abstract class RegistrationSuccessful //
 
   RegistrationSuccessful._();
 
+  @override
   AppUser get user;
 }
 

@@ -139,8 +139,8 @@ class _SignUpBirthDateState extends State<SignUpBirthDate> {
                     initialDateTime: DateTime.now(),
                     maximumDate: DateTime.now(),
                     onDateTimeChanged: (DateTime value) {
-                      StoreProvider.of<AppState>(context)
-                          .dispatch(UpdateRegistrationInfo(info.copyWith(birthDate: value)));
+                      StoreProvider.of<AppState>(context).dispatch(UpdateRegistrationInfo(
+                          info.rebuild((RegistrationInfoBuilder b) => b.birthDate = value.toUtc())));
                     },
                   ),
                 ),

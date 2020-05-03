@@ -97,7 +97,8 @@ class _SmsCodeScreenState extends State<SmsCodeScreen> {
                   hintText: 'Confirmation Code',
                 ),
                 onChanged: (String value) {
-                  StoreProvider.of<AppState>(context).dispatch(UpdateRegistrationInfo(info.copyWith(smsCode: value)));
+                  StoreProvider.of<AppState>(context)
+                      .dispatch(UpdateRegistrationInfo(info.rebuild((RegistrationInfoBuilder b) => b.smsCode = value)));
                 },
                 validator: (String value) {
                   if (value.length == 6) {

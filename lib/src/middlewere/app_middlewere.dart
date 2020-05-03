@@ -66,10 +66,10 @@ class AppMiddleware {
       await authApi.sendEmailPasswordRecovery(action.email);
       final ResetPasswordSuccessful successfulAction = ResetPasswordSuccessful();
       store.dispatch(successfulAction);
-      action.actionResult(successfulAction);
+      action.result(successfulAction);
     } catch (error) {
       store.dispatch(ResetPasswordError(error));
-      action.actionResult(ResetPasswordError(error));
+      action.result(ResetPasswordError(error));
     }
   }
 

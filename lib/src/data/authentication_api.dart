@@ -62,19 +62,20 @@ class AuthApi {
       return null;
     }
     final DocumentSnapshot snapshot = await firestore.document('users/${user.uid}').get();
-    if (snapshot.exists) {
+    if (snapshot.exists && info == null) {
       return AppUser.fromJson(snapshot.data);
     }
     assert(info != null);
-    final AppUser appUser = AppUser(
-      uid: user.uid,
-      displayName: user.displayName,
-      username: info.username,
-      email: user.email,
-      birthDate: info.birthDate,
-      phone: info.phone,
-      photoUrl: user.photoUrl,
-    );
+    final AppUser appUser = AppUser((AppUserBuilder b) {
+      b
+        ..uid = user.uid
+        ..displayName = info.displayName
+        ..username = info.username
+        ..email = info.email
+        ..birthDate = info.birthDate
+        ..phone = info.phone
+        ..photoUrl = user.photoUrl;
+    });
     await firestore.document('users/${user.uid}').setData(appUser.json);
     return appUser;
   }
@@ -119,9 +120,7 @@ class AuthApi {
       codeSent: (String verificationId, [_]) {
         completer.complete(verificationId);
       },
-      verificationFailed: (AuthException error) {
-        completer.completeError(error);
-      },
+      verificationFailed: completer.completeError,
     );
 
     return completer.future;

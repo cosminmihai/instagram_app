@@ -16,11 +16,12 @@ import 'package:redux/redux.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+
   final AuthApi auth = AuthApi(auth: FirebaseAuth.instance, firestore: Firestore.instance);
   final AppMiddleware middleware = AppMiddleware(authApi: auth);
   final Store<AppState> store = Store<AppState>(
     reducer,
-    initialState: const AppState(),
+    initialState: AppState(),
     middleware: middleware.middleware,
   )..dispatch(InitializeApp());
   runApp(InstagramClone(store: store));

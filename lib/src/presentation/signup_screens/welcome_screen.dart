@@ -1,7 +1,10 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:instagram_app/src/actions/registration.dart';
 import 'package:instagram_app/src/containers/registration_info_container.dart';
+import 'package:instagram_app/src/models/app_state.dart';
 import 'package:instagram_app/src/models/registration_info.dart';
 
 class SignUpWelcome extends StatefulWidget {
@@ -13,6 +16,14 @@ class SignUpWelcome extends StatefulWidget {
 }
 
 class _SignUpWelcomeState extends State<SignUpWelcome> {
+  void onResult(dynamic action) {
+    if (action is RegistrationSuccessful) {
+      Navigator.pop(context);
+    } else {
+      print(action);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -47,8 +58,7 @@ class _SignUpWelcomeState extends State<SignUpWelcome> {
               elevation: 0,
               color: Colors.blue,
               onPressed: () {
-                FocusScope.of(context).requestFocus(FocusNode());
-                widget.onNext();
+                StoreProvider.of<AppState>(context).dispatch(Registration(onResult));
               },
               child: const Text('Next'),
             ),

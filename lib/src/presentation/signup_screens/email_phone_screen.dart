@@ -113,11 +113,13 @@ class _SignUpEmailPhoneState extends State<SignUpEmailPhone> with SingleTickerPr
                 ),
                 onChanged: (String value) {
                   if (isPhone) {
-                    info ??= const RegistrationInfo();
-                    StoreProvider.of<AppState>(context).dispatch(UpdateRegistrationInfo(info.copyWith(phone: value)));
+                    info ??= RegistrationInfo();
+                    StoreProvider.of<AppState>(context).dispatch(
+                        UpdateRegistrationInfo(info.rebuild((RegistrationInfoBuilder b) => b.password = value)));
                   } else {
-                    info ??= const RegistrationInfo();
-                    StoreProvider.of<AppState>(context).dispatch(UpdateRegistrationInfo(info.copyWith(email: value)));
+                    info ??= RegistrationInfo();
+                    StoreProvider.of<AppState>(context)
+                        .dispatch(UpdateRegistrationInfo(info.rebuild((RegistrationInfoBuilder b) => b.email = value)));
                   }
                 },
                 validator: (String value) {

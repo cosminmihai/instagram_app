@@ -51,7 +51,8 @@ abstract class Login //
 abstract class LoginSuccessful //
     implements
         Built<LoginSuccessful, LoginSuccessfulBuilder>,
-        AppAction //
+        AppAction,
+        UserAction //
 {
   factory LoginSuccessful(AppUser user) {
     return _$LoginSuccessful((LoginSuccessfulBuilder b) {
@@ -61,6 +62,7 @@ abstract class LoginSuccessful //
 
   LoginSuccessful._();
 
+  @override
   AppUser get user;
 }
 

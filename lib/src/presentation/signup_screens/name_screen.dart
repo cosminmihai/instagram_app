@@ -53,8 +53,8 @@ class _SignUpNameState extends State<SignUpName> {
                     hintText: 'Name',
                   ),
                   onChanged: (String value) {
-                    StoreProvider.of<AppState>(context)
-                        .dispatch(UpdateRegistrationInfo(info.copyWith(displayName: value)));
+                    StoreProvider.of<AppState>(context).dispatch(
+                        UpdateRegistrationInfo(info.rebuild((RegistrationInfoBuilder b) => b.displayName = value)));
                   },
                   validator: (String value) {
                     if (value.trim().length < 3) {

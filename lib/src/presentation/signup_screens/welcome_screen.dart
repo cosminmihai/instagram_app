@@ -58,7 +58,9 @@ class _SignUpWelcomeState extends State<SignUpWelcome> {
               elevation: 0,
               color: Colors.blue,
               onPressed: () {
-                StoreProvider.of<AppState>(context).dispatch(Registration(onResult));
+                StoreProvider.of<AppState>(context).dispatch(
+                  Registration(onResult),
+                );
               },
               child: const Text('Next'),
             ),

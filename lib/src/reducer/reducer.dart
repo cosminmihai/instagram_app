@@ -8,6 +8,7 @@ import 'package:redux/redux.dart';
 
 AppState reducer(AppState state, dynamic action) {
   final AppState result = _reducer(state, action);
+
   if (action is ErrorAction) {
     final dynamic error = action.error;
     try {

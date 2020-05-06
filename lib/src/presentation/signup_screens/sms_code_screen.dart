@@ -85,7 +85,6 @@ class _SmsCodeScreenState extends State<SmsCodeScreen> {
                 style: TextStyle(
                   fontSize: 14.0,
                   color: Theme.of(context).accentColor,
-                  fontWeight: FontWeight.bold,
                 ),
               ),
               const SizedBox(height: 24.0),
@@ -113,8 +112,7 @@ class _SmsCodeScreenState extends State<SmsCodeScreen> {
                 constraints: const BoxConstraints.expand(height: 48.0),
                 child: RaisedButton(
                   elevation: 0.0,
-                  color: Theme.of(context).accentColor,
-                  colorBrightness: Brightness.light,
+                  color: Colors.blue,
                   onPressed: isLoading
                       ? null
                       : () {

@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "730555540635-isig7panq5bp3nmrqud64kmvc237oevq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cosminmihai.instagram_app",
+            "certificate_hash": "4b4bdb36925692ac3326e0ea114447a66b93d9b9"
+          }
+        },
+        {
           "client_id": "730555540635-0pjvgcivcor1ppplle5k47v1dhb3bdtr.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -30,6 +38,13 @@
             {
               "client_id": "730555540635-0pjvgcivcor1ppplle5k47v1dhb3bdtr.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "730555540635-p02t5mc76d5uvbdbpiq4od8s0vrqe5ng.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.cosminmihai.instagramApp"
+              }
             }
           ]
         }

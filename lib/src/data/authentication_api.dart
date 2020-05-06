@@ -105,7 +105,7 @@ class AuthApi {
     }
 
     final Random random = Random();
-    return username = '${email.split('@')[0]}${random.nextInt(1 << 32)}';
+    return '${email.split('@')[0]}${random.nextInt(1 << 32)}';
   }
 
   /// Send an SMS to the user and return the verificationId to be used for login
@@ -114,13 +114,20 @@ class AuthApi {
 
     await auth.verifyPhoneNumber(
       phoneNumber: '+4$phone',
-      timeout: Duration.zero,
-      verificationCompleted: (_) {},
-      codeAutoRetrievalTimeout: (_) {},
+      timeout: const Duration(seconds: 60),
+      verificationCompleted: (_) {
+        print('Verification is complete');
+      },
+      codeAutoRetrievalTimeout: (_) {
+        print('Time runs out');
+      },
       codeSent: (String verificationId, [_]) {
+        print('Code sent');
         completer.complete(verificationId);
       },
-      verificationFailed: completer.completeError,
+      verificationFailed: (AuthException authException) {
+        print('Cosmin Big boss:  ${authException.message}');
+      },
     );
 
     return completer.future;

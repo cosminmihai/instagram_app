@@ -2,7 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:instagram_app/src/actions/login.dart';
+import 'package:instagram_app/src/actions/auth/login.dart';
 import 'package:instagram_app/src/models/app_state.dart';
 
 class LoginPage extends StatefulWidget {

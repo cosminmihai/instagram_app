@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:instagram_app/src/actions/initialize_app.dart';
 import 'package:instagram_app/src/data/authentication_api.dart';
+import 'package:instagram_app/src/data/post_api.dart';
 import 'package:instagram_app/src/middlewere/app_middlewere.dart';
 import 'package:instagram_app/src/models/app_state.dart';
 import 'package:instagram_app/src/presentation/add_photo_screen.dart';
@@ -18,8 +19,9 @@ import 'package:redux/redux.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
-  final AuthApi auth = AuthApi(auth: FirebaseAuth.instance, firestore: Firestore.instance);
-  final AppMiddleware middleware = AppMiddleware(authApi: auth);
+  final AuthApi authApi = AuthApi(auth: FirebaseAuth.instance, firestore: Firestore.instance);
+  final PostApi postApi = PostApi(firestore: Firestore.instance);
+  final AppMiddleware middleware = AppMiddleware(authApi: authApi, postApi: postApi);
   final Store<AppState> store = Store<AppState>(
     reducer,
     initialState: AppState(),

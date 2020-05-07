@@ -22,15 +22,16 @@ class PostMiddleware {
     try {
       final Post post = await postApi.createPost(
         uid: store.state.user.uid,
-        description: action.description,
-        pictures: action.pictures.toList(),
+        description: store.state.savePostInfo.description,
+        pictures: store.state.savePostInfo.pictures.toList(),
       );
+
       final CreatePostSuccessful _result = CreatePostSuccessful(post);
-      store.dispatch(CreatePostSuccessful(post));
+      store.dispatch(_result);
       action.result(_result);
     } catch (error) {
       final CreatePostError _result = CreatePostError(error);
-      store.dispatch(CreatePostError(error));
+      store.dispatch(_result);
       action.result(_result);
     }
   }

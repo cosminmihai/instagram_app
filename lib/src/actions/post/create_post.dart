@@ -12,20 +12,13 @@ abstract class CreatePost //
         Built<CreatePost, CreatePostBuilder>,
         AppAction //
 {
-  factory CreatePost(String description, List<String> pictures, ActionResult actionResult) {
+  factory CreatePost(ActionResult actionResult) {
     return _$CreatePost((CreatePostBuilder b) {
-      b
-        ..description = description
-        ..pictures = ListBuilder<String>(pictures)
-        ..result = actionResult;
+      b.result = actionResult;
     });
   }
 
   CreatePost._();
-
-  String get description;
-
-  BuiltList<String> get pictures;
 
   ActionResult get result;
 }

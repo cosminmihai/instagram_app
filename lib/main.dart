@@ -7,11 +7,12 @@ import 'package:instagram_app/src/data/authentication_api.dart';
 import 'package:instagram_app/src/data/post_api.dart';
 import 'package:instagram_app/src/middlewere/app_middlewere.dart';
 import 'package:instagram_app/src/models/app_state.dart';
-import 'package:instagram_app/src/presentation/add_photo_screen.dart';
+import 'package:instagram_app/src/presentation/add_post_page.dart';
 import 'package:instagram_app/src/presentation/forgot_password.dart';
 import 'package:instagram_app/src/presentation/home.dart';
 import 'package:instagram_app/src/presentation/home_page.dart';
 import 'package:instagram_app/src/presentation/login_page.dart';
+import 'package:instagram_app/src/presentation/post_details.dart';
 import 'package:instagram_app/src/presentation/signup_screens/signup_page.dart';
 import 'package:instagram_app/src/reducer/reducer.dart';
 import 'package:redux/redux.dart';
@@ -48,6 +49,7 @@ class InstagramClone extends StatelessWidget {
           'forgotPassword': (BuildContext context) => ForgotPasswordPage(),
           'signUpPage': (BuildContext context) => const SignUpPage(),
           'addPhotoPage': (BuildContext context) => AddPostPage(),
+          '/postDetails': (BuildContext context) => const PostDetails(),
         },
       ),
     );

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:instagram_app/src/actions/initialize_app.dart';
@@ -21,7 +22,7 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
   final AuthApi authApi = AuthApi(auth: FirebaseAuth.instance, firestore: Firestore.instance);
-  final PostApi postApi = PostApi(firestore: Firestore.instance);
+  final PostApi postApi = PostApi(firestore: Firestore.instance, storage: FirebaseStorage.instance);
   final AppMiddleware middleware = AppMiddleware(authApi: authApi, postApi: postApi);
   final Store<AppState> store = Store<AppState>(
     reducer,

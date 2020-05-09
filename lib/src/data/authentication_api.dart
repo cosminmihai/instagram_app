@@ -94,7 +94,7 @@ class AuthApi {
       }
     }
 
-    String username = displayName.split(' ').join('.').toLowerCase();
+    final String username = displayName.split(' ').join('.').toLowerCase();
     final QuerySnapshot snapshot = await firestore
         .collection('users') //
         .where('username', isEqualTo: username)
@@ -126,7 +126,7 @@ class AuthApi {
         completer.complete(verificationId);
       },
       verificationFailed: (AuthException authException) {
-        print('Cosmin Big boss:  ${authException.message}');
+        print('VerificationFailed: ${authException.message}');
       },
     );
 

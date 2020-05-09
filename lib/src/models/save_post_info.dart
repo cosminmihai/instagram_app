@@ -13,9 +13,11 @@ abstract class SavePostInfo implements Built<SavePostInfo, SavePostInfoBuilder> 
   factory SavePostInfo.fromJson(Map<dynamic, dynamic> json) => serializers.deserializeWith(serializer, json);
 
   SavePostInfo._();
+
   @nullable
   String get description;
 
+  @nullable
   BuiltList<String> get pictures;
 
   Map<String, dynamic> get json => serializers.serializeWith(serializer, this);

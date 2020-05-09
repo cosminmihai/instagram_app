@@ -65,6 +65,8 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+          showUnselectedLabels: false,
           currentIndex: _selectedIndex,
           onTap: onItemTapped,
           selectedItemColor: Theme.of(context).accentColor,

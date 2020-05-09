@@ -18,17 +18,19 @@ class _$SavePostInfoSerializer implements StructuredSerializer<SavePostInfo> {
   @override
   Iterable<Object> serialize(Serializers serializers, SavePostInfo object,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object>[
-      'pictures',
-      serializers.serialize(object.pictures,
-          specifiedType:
-              const FullType(BuiltList, const [const FullType(String)])),
-    ];
+    final result = <Object>[];
     if (object.description != null) {
       result
         ..add('description')
         ..add(serializers.serialize(object.description,
             specifiedType: const FullType(String)));
+    }
+    if (object.pictures != null) {
+      result
+        ..add('pictures')
+        ..add(serializers.serialize(object.pictures,
+            specifiedType:
+                const FullType(BuiltList, const [const FullType(String)])));
     }
     return result;
   }
@@ -70,11 +72,7 @@ class _$SavePostInfo extends SavePostInfo {
   factory _$SavePostInfo([void Function(SavePostInfoBuilder) updates]) =>
       (new SavePostInfoBuilder()..update(updates)).build();
 
-  _$SavePostInfo._({this.description, this.pictures}) : super._() {
-    if (pictures == null) {
-      throw new BuiltValueNullFieldError('SavePostInfo', 'pictures');
-    }
-  }
+  _$SavePostInfo._({this.description, this.pictures}) : super._();
 
   @override
   SavePostInfo rebuild(void Function(SavePostInfoBuilder) updates) =>
@@ -148,12 +146,12 @@ class SavePostInfoBuilder
     try {
       _$result = _$v ??
           new _$SavePostInfo._(
-              description: description, pictures: pictures.build());
+              description: description, pictures: _pictures?.build());
     } catch (_) {
       String _$failedField;
       try {
         _$failedField = 'pictures';
-        pictures.build();
+        _pictures?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'SavePostInfo', _$failedField, e.toString());

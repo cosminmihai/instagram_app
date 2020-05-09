@@ -18,8 +18,9 @@ class PostApi {
 
   Future<Post> createPost({@required String uid, @required String description, @required List<String> pictures}) async {
     final List<String> downloadUrls = <String>[];
-    for (int i = 0; i <= pictures.length; i++) {
+    for (int i = 0; i < pictures.length; i++) {
       final String file = pictures[i];
+
       final StorageReference storageRef = _storage.ref().child('users/$uid/posts/${basename(file)}');
       await storageRef.putFile(File(file)).onComplete;
       final String url = await storageRef.getDownloadURL();

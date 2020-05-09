@@ -5,7 +5,7 @@ import 'package:instagram_app/src/models/save_post_info.dart';
 import 'package:redux/redux.dart';
 
 class SavePostInfoContainer extends StatelessWidget {
-  const SavePostInfoContainer({Key key, this.builder}) : super(key: key);
+  const SavePostInfoContainer({Key key, @required this.builder}) : super(key: key);
 
   final ViewModelBuilder<SavePostInfo> builder;
 

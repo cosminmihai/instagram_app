@@ -16,6 +16,16 @@ class PostApi {
   final Firestore _firestore;
   final FirebaseStorage _storage;
 
+  Stream<List<Post>> listen(String uid) {
+    return _firestore //
+        .collection('posts')
+        .where('uid', isEqualTo: uid)
+        .snapshots()
+        .map((QuerySnapshot snapshot) => snapshot.documents //
+            .map((DocumentSnapshot document) => Post.fromJson(document.data))
+            .toList());
+  }
+
   Future<Post> createPost({@required String uid, @required String description, @required List<String> pictures}) async {
     final List<String> downloadUrls = <String>[];
     for (int i = 0; i < pictures.length; i++) {

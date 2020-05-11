@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:instagram_app/src/actions/auth/logout.dart';
+import 'package:instagram_app/src/actions/post/listen_for_posts.dart';
 import 'package:instagram_app/src/models/app_state.dart';
-import 'package:instagram_app/src/presentation/add_post_page.dart';
+import 'package:instagram_app/src/presentation/home/add_post_page.dart';
+import 'package:instagram_app/src/presentation/home/feed_part.dart';
+import 'package:redux/redux.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -10,6 +13,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin {
+  Store<AppState> store;
   int _selectedIndex = 0;
   TabController tabController;
 
@@ -37,8 +41,17 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
 
   @override
   void initState() {
-    tabController = TabController(length: 4, vsync: this);
     super.initState();
+    tabController = TabController(length: 4, vsync: this);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      store = StoreProvider.of<AppState>(context).dispatch(ListenForPosts());
+    });
+  }
+
+  @override
+  void dispose() {
+    store.dispatch(StopListeningForPosts());
+    super.dispose();
   }
 
   @override
@@ -58,7 +71,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
       body: TabBarView(
         controller: tabController,
         children: <Widget>[
-          Container(color: Colors.red),
+          FeedPart(),
           Container(color: Colors.blue),
           Container(color: Colors.white),
           Container(color: Colors.green),

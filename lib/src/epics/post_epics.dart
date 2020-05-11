@@ -1,5 +1,6 @@
 import 'package:instagram_app/src/actions/actions.dart';
 import 'package:instagram_app/src/actions/post/create_post.dart';
+import 'package:instagram_app/src/actions/post/listen_for_posts.dart';
 import 'package:instagram_app/src/data/post_api.dart';
 import 'package:instagram_app/src/models/app_state.dart';
 import 'package:instagram_app/src/models/post.dart';
@@ -15,7 +16,10 @@ class PostEpics {
   final PostApi _postApi;
 
   Epic<AppState> get epics {
-    return combineEpics(<Epic<AppState>>[TypedEpic<AppState, CreatePost>(_createPost)]);
+    return combineEpics(<Epic<AppState>>[
+      TypedEpic<AppState, CreatePost>(_createPost),
+      _listenForPosts,
+    ]);
   }
 
   Stream<AppAction> _createPost(Stream<CreatePost> actions, EpicStore<AppState> store) {
@@ -30,5 +34,15 @@ class PostEpics {
             .map<AppAction>((Post post) => CreatePostSuccessful(post))
             .onErrorReturnWith((dynamic error) => CreatePostError(error))
             .doOnData(action.result));
+  }
+
+  Stream<AppAction> _listenForPosts(Stream<dynamic> actions, EpicStore<AppState> store) {
+    return actions //
+        .whereType<ListenForPosts>()
+        .flatMap((ListenForPosts action) => _postApi
+            .listen(store.state.user.uid)
+            .map<AppAction>((List<Post> posts) => OnPostsEvent(posts))
+            .takeUntil(actions.whereType<StopListeningForPosts>())
+            .onErrorReturnWith((dynamic error) => ListenForPostsError(error)));
   }
 }

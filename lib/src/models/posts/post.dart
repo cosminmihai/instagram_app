@@ -1,10 +1,10 @@
 library post;
 
-import 'package:meta/meta.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:instagram_app/src/models/serializers.dart';
+import 'package:meta/meta.dart';
 
 part 'post.g.dart';
 
@@ -41,6 +41,11 @@ abstract class Post implements Built<Post, PostBuilder> {
   int get likes;
 
   BuiltList<String> get pictures;
+
+  @override
+  int compareTo(Post other) {
+    return other.createdAt.compareTo(createdAt);
+  }
 
   Map<String, dynamic> get json => serializers.serializeWith(serializer, this);
 

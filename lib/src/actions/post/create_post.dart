@@ -2,7 +2,7 @@ library create_post;
 
 import 'package:built_value/built_value.dart';
 import 'package:instagram_app/src/actions/actions.dart';
-import 'package:instagram_app/src/models/post.dart';
+import 'package:instagram_app/src/models/posts/post.dart';
 
 part 'create_post.g.dart';
 

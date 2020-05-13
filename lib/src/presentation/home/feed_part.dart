@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instagram_app/src/containers/posts_container.dart';
-import 'package:instagram_app/src/models/post.dart';
+import 'package:instagram_app/src/models/posts/post.dart';
 import 'package:timeago/timeago.dart';
 
 class FeedPart extends StatefulWidget {

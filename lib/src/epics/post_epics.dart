@@ -3,7 +3,7 @@ import 'package:instagram_app/src/actions/post/create_post.dart';
 import 'package:instagram_app/src/actions/post/listen_for_posts.dart';
 import 'package:instagram_app/src/data/post_api.dart';
 import 'package:instagram_app/src/models/app_state.dart';
-import 'package:instagram_app/src/models/post.dart';
+import 'package:instagram_app/src/models/posts/post.dart';
 import 'package:meta/meta.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:rxdart/rxdart.dart';
@@ -26,9 +26,9 @@ class PostEpics {
     return actions //
         .flatMap((CreatePost action) => _postApi
             .createPost(
-              uid: store.state.user.uid,
-              description: store.state.savePostInfo.description,
-              pictures: store.state.savePostInfo.pictures.toList(),
+              uid: store.state.auth.user.uid,
+              description: store.state.posts.savePostInfo.description,
+              pictures: store.state.posts.savePostInfo.pictures.toList(),
             )
             .asStream()
             .map<AppAction>((Post post) => CreatePostSuccessful(post))
@@ -40,7 +40,7 @@ class PostEpics {
     return actions //
         .whereType<ListenForPosts>()
         .flatMap((ListenForPosts action) => _postApi
-            .listen(store.state.user.uid)
+            .listen(store.state.auth.user.uid)
             .map<AppAction>((List<Post> posts) => OnPostsEvent(posts))
             .takeUntil(actions.whereType<StopListeningForPosts>())
             .onErrorReturnWith((dynamic error) => ListenForPostsError(error)));

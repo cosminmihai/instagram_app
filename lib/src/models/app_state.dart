@@ -1,13 +1,11 @@
 library app_state;
 
-import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-import 'package:instagram_app/src/models/post.dart';
-import 'package:instagram_app/src/models/registration_info.dart';
-import 'package:instagram_app/src/models/save_post_info.dart';
+import 'package:instagram_app/src/models/auth/auth_state.dart';
+import 'package:instagram_app/src/models/comments/comments_state.dart';
+import 'package:instagram_app/src/models/posts/post_state.dart';
 import 'package:instagram_app/src/models/serializers.dart';
-import 'app_user.dart';
 
 part 'app_state.g.dart';
 
@@ -18,16 +16,11 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
 
   AppState._();
 
-  @nullable
-  AppUser get user;
+  AuthState get auth;
 
-  @nullable
-  RegistrationInfo get info;
+  PostsState get posts;
 
-  BuiltList<Post> get posts;
-
-  @nullable
-  SavePostInfo get savePostInfo;
+  CommentsState get comments;
 
   Map<String, dynamic> get json => serializers.serializeWith(serializer, this);
 

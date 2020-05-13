@@ -24,7 +24,7 @@ library login;
 
 import 'package:built_value/built_value.dart';
 import 'package:instagram_app/src/actions/actions.dart';
-import 'package:instagram_app/src/models/app_user.dart';
+import 'package:instagram_app/src/models/auth/app_user.dart';
 
 part 'login.g.dart';
 

@@ -2,9 +2,10 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:instagram_app/src/models/post.dart';
+import 'package:instagram_app/src/models/posts/post.dart';
 import 'package:meta/meta.dart';
 import 'package:path/path.dart';
+import 'package:rxdart/rxdart.dart';
 
 class PostApi {
   const PostApi({@required Firestore firestore, @required FirebaseStorage storage})
@@ -23,7 +24,10 @@ class PostApi {
         .snapshots()
         .map((QuerySnapshot snapshot) => snapshot.documents //
             .map((DocumentSnapshot document) => Post.fromJson(document.data))
-            .toList());
+            .toList())
+        .doOnData((List<Post> list) {
+      list.sort();
+    });
   }
 
   Future<Post> createPost({@required String uid, @required String description, @required List<String> pictures}) async {

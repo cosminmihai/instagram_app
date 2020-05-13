@@ -6,7 +6,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:instagram_app/src/actions/post/update_post_info.dart';
 import 'package:instagram_app/src/containers/save_post_info_container.dart';
 import 'package:instagram_app/src/models/app_state.dart';
-import 'package:instagram_app/src/models/save_post_info.dart';
+import 'package:instagram_app/src/models/posts/save_post_info.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
 

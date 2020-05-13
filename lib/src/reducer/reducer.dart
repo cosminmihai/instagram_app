@@ -1,12 +1,10 @@
 import 'package:instagram_app/src/actions/actions.dart';
 import 'package:instagram_app/src/models/app_state.dart';
 import 'package:instagram_app/src/reducer/auth_reducer.dart';
+import 'package:instagram_app/src/reducer/comments_reducer.dart';
 import 'package:instagram_app/src/reducer/post_reducer.dart';
-import 'package:redux/redux.dart';
 
 AppState reducer(AppState state, dynamic action) {
-  final AppState result = _reducer(state, action);
-
   if (action is ErrorAction) {
     final dynamic error = action.error;
     try {
@@ -14,11 +12,11 @@ AppState reducer(AppState state, dynamic action) {
       print('StackTrace: ${error.stackTrace}');
     } catch (_) {}
   }
-  print('${action.runtimeType} => $result');
-  return result;
+  print(action);
+  return state.rebuild((b) {
+    b
+      ..auth = authReducer(state.auth, action).toBuilder()
+      ..posts = postReducer(state.posts, action).toBuilder()
+      ..comments = commentsReducer(state.comments, action).toBuilder();
+  });
 }
-
-Reducer<AppState> _reducer = combineReducers<AppState>(<Reducer<AppState>>[
-  authReducer,
-  postReducer,
-]);

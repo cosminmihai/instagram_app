@@ -5,7 +5,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:instagram_app/src/actions/auth/registration.dart';
 import 'package:instagram_app/src/containers/registration_info_container.dart';
 import 'package:instagram_app/src/models/app_state.dart';
-import 'package:instagram_app/src/models/registration_info.dart';
+import 'package:instagram_app/src/models/auth/registration_info.dart';
 
 class SignUpWelcome extends StatefulWidget {
   const SignUpWelcome({Key key, @required this.onNext}) : super(key: key);

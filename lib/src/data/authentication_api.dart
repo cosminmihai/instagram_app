@@ -2,9 +2,9 @@ import 'dart:async';
 import 'dart:math';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:instagram_app/src/models/app_user.dart';
+import 'package:instagram_app/src/models/auth/app_user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:instagram_app/src/models/registration_info.dart';
+import 'package:instagram_app/src/models/auth/registration_info.dart';
 
 class AuthApi {
   const AuthApi({@required this.auth, @required this.firestore});

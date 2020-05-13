@@ -7,7 +7,7 @@ import 'package:instagram_app/src/actions/auth/reset_password.dart';
 import 'package:instagram_app/src/actions/auth/send_sms.dart';
 import 'package:instagram_app/src/data/authentication_api.dart';
 import 'package:instagram_app/src/models/app_state.dart';
-import 'package:instagram_app/src/models/app_user.dart';
+import 'package:instagram_app/src/models/auth/app_user.dart';
 import 'package:meta/meta.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:rxdart/rxdart.dart';
@@ -61,7 +61,7 @@ class AuthEpics {
   Stream<AppAction> _signUp(Stream<Registration> actions, EpicStore<AppState> store) {
     return actions //
         .flatMap((Registration action) => _authApi
-            .register(store.state.info)
+            .register(store.state.auth.info)
             .asStream()
             .map<AppAction>((AppUser user) => RegistrationSuccessful(user))
             .onErrorReturnWith((dynamic error) => RegistrationError(error))
@@ -71,7 +71,7 @@ class AuthEpics {
   Stream<AppAction> _reserveUsername(Stream<ReserveUsername> actions, EpicStore<AppState> store) {
     return actions //
         .flatMap((ReserveUsername action) => _authApi
-            .reserveUsername(email: store.state.info.email, displayName: store.state.info.displayName)
+            .reserveUsername(email: store.state.auth.info.email, displayName: store.state.auth.info.displayName)
             .asStream()
             .map<AppAction>((String username) => ReserveUsernameSuccessful(username))
             .onErrorReturnWith((dynamic error) => ReserveUsernameError(error)));
@@ -80,7 +80,7 @@ class AuthEpics {
   Stream<AppAction> _sendSms(Stream<SendSms> actions, EpicStore<AppState> store) {
     return actions //
         .flatMap((SendSms action) => _authApi
-            .sendSms(store.state.info.phone)
+            .sendSms(store.state.auth.info.phone)
             .asStream()
             .map<AppAction>((String verificationId) => SendSmsSuccessful(verificationId))
             .onErrorReturnWith((dynamic error) => SendSmsError(error))

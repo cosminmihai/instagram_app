@@ -16,7 +16,7 @@ abstract class PostsState implements Built<PostsState, PostsStateBuilder> {
 
   PostsState._();
 
-  BuiltList<Post> get posts;
+  BuiltMap<String, Post> get posts;
 
   @nullable
   SavePostInfo get savePostInfo;

@@ -9,6 +9,7 @@ import 'package:instagram_app/src/data/comments_api.dart';
 import 'package:instagram_app/src/data/post_api.dart';
 import 'package:instagram_app/src/epics/app_epics.dart';
 import 'package:instagram_app/src/models/app_state.dart';
+import 'package:instagram_app/src/presentation/home/add_comment_page.dart';
 import 'package:instagram_app/src/presentation/home/add_post_page.dart';
 import 'package:instagram_app/src/presentation/forgot_password.dart';
 import 'package:instagram_app/src/presentation/home.dart';
@@ -56,6 +57,7 @@ class InstagramClone extends StatelessWidget {
           'signUpPage': (BuildContext context) => const SignUpPage(),
           'addPhotoPage': (BuildContext context) => AddPostPage(),
           '/postDetails': (BuildContext context) => const PostDetails(),
+          '/commentsPage': (_) => const CommentsPage(),
         },
       ),
     );

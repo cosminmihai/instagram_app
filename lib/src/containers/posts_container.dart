@@ -12,7 +12,7 @@ class PostContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, List<Post>>(
-      converter: (Store<AppState> store) => store.state.posts.posts.toList(),
+      converter: (Store<AppState> store) => store.state.posts.posts.values.toList(),
       builder: builder,
     );
   }

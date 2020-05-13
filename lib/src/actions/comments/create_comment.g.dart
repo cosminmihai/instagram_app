@@ -9,13 +9,18 @@ part of create_comment;
 class _$CreateComment extends CreateComment {
   @override
   final String text;
+  @override
+  final ActionResult result;
 
   factory _$CreateComment([void Function(CreateCommentBuilder) updates]) =>
       (new CreateCommentBuilder()..update(updates)).build();
 
-  _$CreateComment._({this.text}) : super._() {
+  _$CreateComment._({this.text, this.result}) : super._() {
     if (text == null) {
       throw new BuiltValueNullFieldError('CreateComment', 'text');
+    }
+    if (result == null) {
+      throw new BuiltValueNullFieldError('CreateComment', 'result');
     }
   }
 
@@ -29,17 +34,22 @@ class _$CreateComment extends CreateComment {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is CreateComment && text == other.text;
+    final dynamic _$dynamicOther = other;
+    return other is CreateComment &&
+        text == other.text &&
+        result == _$dynamicOther.result;
   }
 
   @override
   int get hashCode {
-    return $jf($jc(0, text.hashCode));
+    return $jf($jc($jc(0, text.hashCode), result.hashCode));
   }
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('CreateComment')..add('text', text))
+    return (newBuiltValueToStringHelper('CreateComment')
+          ..add('text', text)
+          ..add('result', result))
         .toString();
   }
 }
@@ -52,11 +62,16 @@ class CreateCommentBuilder
   String get text => _$this._text;
   set text(String text) => _$this._text = text;
 
+  ActionResult _result;
+  ActionResult get result => _$this._result;
+  set result(ActionResult result) => _$this._result = result;
+
   CreateCommentBuilder();
 
   CreateCommentBuilder get _$this {
     if (_$v != null) {
       _text = _$v.text;
+      _result = _$v.result;
       _$v = null;
     }
     return this;
@@ -77,7 +92,7 @@ class CreateCommentBuilder
 
   @override
   _$CreateComment build() {
-    final _$result = _$v ?? new _$CreateComment._(text: text);
+    final _$result = _$v ?? new _$CreateComment._(text: text, result: result);
     replace(_$result);
     return _$result;
   }

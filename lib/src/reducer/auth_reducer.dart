@@ -3,6 +3,7 @@ import 'package:instagram_app/src/actions/auth/logout.dart';
 import 'package:instagram_app/src/actions/auth/reserve_username.dart';
 import 'package:instagram_app/src/actions/auth/send_sms.dart';
 import 'package:instagram_app/src/actions/auth/update_registration_info.dart';
+import 'package:instagram_app/src/actions/get_action.dart';
 import 'package:instagram_app/src/models/auth/auth_state.dart';
 import 'package:redux/redux.dart';
 
@@ -12,6 +13,7 @@ Reducer<AuthState> authReducer = combineReducers<AuthState>(<Reducer<AuthState>>
   TypedReducer<AuthState, UpdateRegistrationInfo>(_updateRegistrationInfo),
   TypedReducer<AuthState, ReserveUsernameSuccessful>(_reserveUsernameSuccessful),
   TypedReducer<AuthState, SendSmsSuccessful>(_sendSmsSuccessful),
+  TypedReducer<AuthState, GetContactSuccessful>(_getContactSuccessful),
 ]);
 
 AuthState _userAction(AuthState state, UserAction action) {
@@ -34,4 +36,10 @@ AuthState _reserveUsernameSuccessful(AuthState state, ReserveUsernameSuccessful 
 
 AuthState _sendSmsSuccessful(AuthState state, SendSmsSuccessful action) {
   return state.rebuild((AuthStateBuilder b) => b.info.verificationId = action.verificationId);
+}
+
+AuthState _getContactSuccessful(AuthState state, GetContactSuccessful action) {
+  return state.rebuild((AuthStateBuilder b) {
+    b.contacts[action.user.uid] = action.user;
+  });
 }

@@ -12,7 +12,10 @@ class PostContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, List<Post>>(
-      converter: (Store<AppState> store) => store.state.posts.posts.values.toList(),
+      converter: (Store<AppState> store) {
+        return store.state.posts.posts.values.where((Post post) => store.state.auth.contacts[post.uid] != null).toList()
+          ..sort();
+      },
       builder: builder,
     );
   }

@@ -22,6 +22,8 @@ abstract class AuthState implements Built<AuthState, AuthStateBuilder> {
   @nullable
   RegistrationInfo get info;
 
+  BuiltMap<String, AppUser> get contacts;
+
   Map<String, dynamic> get json => serializers.serializeWith(serializer, this);
 
   static Serializer<AuthState> get serializer => _$authStateSerializer;

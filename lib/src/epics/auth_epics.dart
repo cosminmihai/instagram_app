@@ -5,6 +5,7 @@ import 'package:instagram_app/src/actions/auth/registration.dart';
 import 'package:instagram_app/src/actions/auth/reserve_username.dart';
 import 'package:instagram_app/src/actions/auth/reset_password.dart';
 import 'package:instagram_app/src/actions/auth/send_sms.dart';
+import 'package:instagram_app/src/actions/get_action.dart';
 import 'package:instagram_app/src/data/authentication_api.dart';
 import 'package:instagram_app/src/models/app_state.dart';
 import 'package:instagram_app/src/models/auth/app_user.dart';
@@ -27,6 +28,7 @@ class AuthEpics {
       TypedEpic<AppState, Registration>(_signUp),
       TypedEpic<AppState, ReserveUsername>(_reserveUsername),
       TypedEpic<AppState, SendSms>(_sendSms),
+      TypedEpic<AppState, GetContact>(_getContact),
     ]);
   }
 
@@ -85,5 +87,14 @@ class AuthEpics {
             .map<AppAction>((String verificationId) => SendSmsSuccessful(verificationId))
             .onErrorReturnWith((dynamic error) => SendSmsError(error))
             .doOnData(action.result));
+  }
+
+  Stream<AppAction> _getContact(Stream<GetContact> actions, EpicStore<AppState> store) {
+    return actions //
+        .flatMap((GetContact action) => _authApi
+            .getContacts(action.uid)
+            .asStream()
+            .map<AppAction>((AppUser contact) => GetContactSuccessful(contact))
+            .onErrorReturnWith((dynamic error) => GetContactError(error)));
   }
 }

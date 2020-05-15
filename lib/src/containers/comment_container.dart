@@ -15,6 +15,7 @@ class CommentsContainer extends StatelessWidget {
       converter: (Store<AppState> store) {
         return store.state.comments.comments
             .where((Comment comment) => comment.postId == store.state.posts.selectedPostId)
+            .where((Comment comment) => store.state.auth.contacts[comment.uid] != null)
             .toList();
       },
       builder: builder,

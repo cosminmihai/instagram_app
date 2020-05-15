@@ -3,8 +3,10 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:instagram_app/src/actions/comments/create_comment.dart';
 import 'package:instagram_app/src/actions/comments/listen_for_comments.dart';
 import 'package:instagram_app/src/containers/comment_container.dart';
+import 'package:instagram_app/src/containers/contacts_container.dart';
 import 'package:instagram_app/src/containers/selected_posts_container.dart';
 import 'package:instagram_app/src/models/app_state.dart';
+import 'package:instagram_app/src/models/auth/app_user.dart';
 import 'package:instagram_app/src/models/comments/comment.dart';
 import 'package:instagram_app/src/models/posts/post.dart';
 import 'package:redux/redux.dart';
@@ -54,15 +56,21 @@ class _CommentsPageState extends State<CommentsPage> {
           body: Column(
             children: <Widget>[
               Flexible(
-                child: CommentsContainer(
-                  builder: (BuildContext context, List<Comment> comments) {
-                    return ListView.builder(
-                      itemCount: comments.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        final Comment comment = comments[index];
-                        return ListTile(
-                          title: Text(comment.text),
-                          subtitle: Text(comment.createdAt.toIso8601String()),
+                child: ContactsContainer(
+                  builder: (BuildContext context, Map<String, AppUser> contacts) {
+                    return CommentsContainer(
+                      builder: (BuildContext context, List<Comment> comments) {
+                        return ListView.builder(
+                          itemCount: comments.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            final Comment comment = comments[index];
+                            final AppUser contact = contacts[comment.uid];
+                            return ListTile(
+                              leading: Text(contact.username),
+                              title: Text(comment.text),
+                              subtitle: Text(comment.createdAt.toIso8601String()),
+                            );
+                          },
                         );
                       },
                     );

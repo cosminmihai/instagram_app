@@ -132,4 +132,9 @@ class AuthApi {
 
     return completer.future;
   }
+
+  Future<AppUser> getContacts(String uid) async {
+    final DocumentSnapshot snapshot = await firestore.document('users/$uid').get();
+    return AppUser.fromJson(snapshot.data);
+  }
 }

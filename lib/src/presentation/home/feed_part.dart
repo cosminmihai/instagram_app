@@ -18,65 +18,67 @@ class _FeedPartState extends State<FeedPart> {
   Widget build(BuildContext context) {
     return ContactsContainer(
       builder: (BuildContext context, Map<String, AppUser> contact) {
-        return PostContainer(builder: (BuildContext context, List<Post> posts) {
-          return ListView.builder(
-            itemCount: posts.length,
-            itemBuilder: (BuildContext context, int index) {
-              final Post post = posts[index];
-              final AppUser user = contact[post.uid];
-              final DateTime localHour = DateTime.now();
-              final DateTime createdAt = post.createdAt;
-              final Duration diference = localHour.difference(createdAt);
+        return PostContainer(
+          builder: (BuildContext context, List<Post> posts) {
+            return ListView.builder(
+              itemCount: posts.length,
+              itemBuilder: (BuildContext context, int index) {
+                final Post post = posts[index];
+                final AppUser user = contact[post.uid];
+                final DateTime localHour = DateTime.now();
+                final DateTime createdAt = post.createdAt;
+                final Duration diference = localHour.difference(createdAt);
 
-              return Container(
-                height: MediaQuery.of(context).size.height / 2,
-                child: Column(
-                  children: <Widget>[
-                    ListTile(
-                      title: Text(user.displayName),
-                      subtitle: Text('@${user.username}'),
-                    ),
-                    Expanded(
-                      child: Image.network(
-                        post.pictures.first,
-                        fit: BoxFit.cover,
-                        width: MediaQuery.of(context).size.width,
+                return Container(
+                  height: MediaQuery.of(context).size.height / 2,
+                  child: Column(
+                    children: <Widget>[
+                      ListTile(
+                        title: Text(user.displayName),
+                        subtitle: Text('@${user.username}'),
                       ),
-                    ),
-                    Row(
-                      children: <Widget>[
-                        IconButton(
-                          icon: Icon(Icons.favorite_border),
-                          onPressed: () {},
+                      Expanded(
+                        child: Image.network(
+                          post.pictures.first,
+                          fit: BoxFit.cover,
+                          width: MediaQuery.of(context).size.width,
                         ),
-                        IconButton(
-                          icon: Icon(Icons.chat_bubble_outline),
-                          onPressed: () {
-                            StoreProvider.of<AppState>(context).dispatch(SetSelectedPost(post.id));
-                            Navigator.pushNamed(context, '/commentsPage');
-                          },
-                        ),
-                        IconButton(
-                          icon: Icon(Icons.send),
-                          onPressed: () {},
-                        ),
-                        const Spacer(),
-                        IconButton(
-                          icon: Icon(Icons.bookmark_border),
-                          onPressed: () {},
-                        )
-                      ],
-                    ),
-                    ListTile(
-                      title: Text(post.description),
-                      subtitle: Text(format(localHour.subtract(diference))),
-                    )
-                  ],
-                ),
-              );
-            },
-          );
-        });
+                      ),
+                      Row(
+                        children: <Widget>[
+                          IconButton(
+                            icon: Icon(Icons.favorite_border),
+                            onPressed: () {},
+                          ),
+                          IconButton(
+                            icon: Icon(Icons.chat_bubble_outline),
+                            onPressed: () {
+                              StoreProvider.of<AppState>(context).dispatch(SetSelectedPost(post.id));
+                              Navigator.pushNamed(context, '/commentsPage');
+                            },
+                          ),
+                          IconButton(
+                            icon: Icon(Icons.send),
+                            onPressed: () {},
+                          ),
+                          const Spacer(),
+                          IconButton(
+                            icon: Icon(Icons.bookmark_border),
+                            onPressed: () {},
+                          )
+                        ],
+                      ),
+                      ListTile(
+                        title: Text(post.description),
+                        subtitle: Text(format(localHour.subtract(diference))),
+                      )
+                    ],
+                  ),
+                );
+              },
+            );
+          },
+        );
       },
     );
   }

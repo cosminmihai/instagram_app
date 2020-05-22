@@ -7,10 +7,22 @@ part of create_like.dart;
 // **************************************************************************
 
 class _$CreateLike extends CreateLike {
+  @override
+  final String parentId;
+  @override
+  final LikeType type;
+
   factory _$CreateLike([void Function(CreateLikeBuilder) updates]) =>
       (new CreateLikeBuilder()..update(updates)).build();
 
-  _$CreateLike._() : super._();
+  _$CreateLike._({this.parentId, this.type}) : super._() {
+    if (parentId == null) {
+      throw new BuiltValueNullFieldError('CreateLike', 'parentId');
+    }
+    if (type == null) {
+      throw new BuiltValueNullFieldError('CreateLike', 'type');
+    }
+  }
 
   @override
   CreateLike rebuild(void Function(CreateLikeBuilder) updates) =>
@@ -22,24 +34,46 @@ class _$CreateLike extends CreateLike {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is CreateLike;
+    return other is CreateLike &&
+        parentId == other.parentId &&
+        type == other.type;
   }
 
   @override
   int get hashCode {
-    return 992222872;
+    return $jf($jc($jc(0, parentId.hashCode), type.hashCode));
   }
 
   @override
   String toString() {
-    return newBuiltValueToStringHelper('CreateLike').toString();
+    return (newBuiltValueToStringHelper('CreateLike')
+          ..add('parentId', parentId)
+          ..add('type', type))
+        .toString();
   }
 }
 
 class CreateLikeBuilder implements Builder<CreateLike, CreateLikeBuilder> {
   _$CreateLike _$v;
 
+  String _parentId;
+  String get parentId => _$this._parentId;
+  set parentId(String parentId) => _$this._parentId = parentId;
+
+  LikeType _type;
+  LikeType get type => _$this._type;
+  set type(LikeType type) => _$this._type = type;
+
   CreateLikeBuilder();
+
+  CreateLikeBuilder get _$this {
+    if (_$v != null) {
+      _parentId = _$v.parentId;
+      _type = _$v.type;
+      _$v = null;
+    }
+    return this;
+  }
 
   @override
   void replace(CreateLike other) {
@@ -56,18 +90,25 @@ class CreateLikeBuilder implements Builder<CreateLike, CreateLikeBuilder> {
 
   @override
   _$CreateLike build() {
-    final _$result = _$v ?? new _$CreateLike._();
+    final _$result = _$v ?? new _$CreateLike._(parentId: parentId, type: type);
     replace(_$result);
     return _$result;
   }
 }
 
 class _$CreateLikeSuccessful extends CreateLikeSuccessful {
+  @override
+  final Like like;
+
   factory _$CreateLikeSuccessful(
           [void Function(CreateLikeSuccessfulBuilder) updates]) =>
       (new CreateLikeSuccessfulBuilder()..update(updates)).build();
 
-  _$CreateLikeSuccessful._() : super._();
+  _$CreateLikeSuccessful._({this.like}) : super._() {
+    if (like == null) {
+      throw new BuiltValueNullFieldError('CreateLikeSuccessful', 'like');
+    }
+  }
 
   @override
   CreateLikeSuccessful rebuild(
@@ -81,17 +122,19 @@ class _$CreateLikeSuccessful extends CreateLikeSuccessful {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is CreateLikeSuccessful;
+    return other is CreateLikeSuccessful && like == other.like;
   }
 
   @override
   int get hashCode {
-    return 351881331;
+    return $jf($jc(0, like.hashCode));
   }
 
   @override
   String toString() {
-    return newBuiltValueToStringHelper('CreateLikeSuccessful').toString();
+    return (newBuiltValueToStringHelper('CreateLikeSuccessful')
+          ..add('like', like))
+        .toString();
   }
 }
 
@@ -99,7 +142,19 @@ class CreateLikeSuccessfulBuilder
     implements Builder<CreateLikeSuccessful, CreateLikeSuccessfulBuilder> {
   _$CreateLikeSuccessful _$v;
 
+  LikeBuilder _like;
+  LikeBuilder get like => _$this._like ??= new LikeBuilder();
+  set like(LikeBuilder like) => _$this._like = like;
+
   CreateLikeSuccessfulBuilder();
+
+  CreateLikeSuccessfulBuilder get _$this {
+    if (_$v != null) {
+      _like = _$v.like?.toBuilder();
+      _$v = null;
+    }
+    return this;
+  }
 
   @override
   void replace(CreateLikeSuccessful other) {
@@ -116,7 +171,20 @@ class CreateLikeSuccessfulBuilder
 
   @override
   _$CreateLikeSuccessful build() {
-    final _$result = _$v ?? new _$CreateLikeSuccessful._();
+    _$CreateLikeSuccessful _$result;
+    try {
+      _$result = _$v ?? new _$CreateLikeSuccessful._(like: like.build());
+    } catch (_) {
+      String _$failedField;
+      try {
+        _$failedField = 'like';
+        like.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            'CreateLikeSuccessful', _$failedField, e.toString());
+      }
+      rethrow;
+    }
     replace(_$result);
     return _$result;
   }

@@ -2,6 +2,7 @@ import 'package:instagram_app/src/actions/actions.dart';
 import 'package:instagram_app/src/actions/initialize_app.dart';
 import 'package:instagram_app/src/data/authentication_api.dart';
 import 'package:instagram_app/src/data/comments_api.dart';
+import 'package:instagram_app/src/data/like_api.dart';
 import 'package:instagram_app/src/data/post_api.dart';
 import 'package:instagram_app/src/epics/auth_epics.dart';
 import 'package:instagram_app/src/epics/comments_epics.dart';
@@ -12,21 +13,27 @@ import 'package:meta/meta.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:rxdart/rxdart.dart';
 
+import 'likes_epics.dart';
+
 class AppEpics {
   const AppEpics({
     @required AuthApi authApi,
     @required PostApi postApi,
     @required CommentsApi commentsApi,
+    @required LikeApi likeApi,
   })  : assert(authApi != null),
         assert(postApi != null),
         assert(commentsApi != null),
+        assert(likeApi != null),
         _authApi = authApi,
         _postApi = postApi,
-        _commentsApi = commentsApi;
+        _commentsApi = commentsApi,
+        _likeApi = likeApi;
 
   final AuthApi _authApi;
   final PostApi _postApi;
   final CommentsApi _commentsApi;
+  final LikeApi _likeApi;
 
   Epic<AppState> get epics {
     return combineEpics(<Epic<AppState>>[
@@ -34,10 +41,12 @@ class AppEpics {
       AuthEpics(authApi: _authApi).epics,
       PostEpics(postApi: _postApi).epics,
       CommentsEpics(commentsApi: _commentsApi).epics,
+      LikesEpics(likeApi: _likeApi).epics,
     ]);
   }
 
-  Stream<AppAction> _initializeApp(Stream<InitializeApp> actions, EpicStore<AppState> store) {
+  Stream<AppAction> _initializeApp(
+      Stream<InitializeApp> actions, EpicStore<AppState> store) {
     return actions //
         .flatMap((InitializeApp action) => _authApi
             .getUser()

@@ -3,6 +3,8 @@ library create_like.dart;
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:instagram_app/src/actions/actions.dart';
+import 'package:instagram_app/src/models/likes/like.dart';
+import 'package:instagram_app/src/models/likes/like_type.dart';
 
 part 'create_like.g.dart';
 
@@ -11,12 +13,19 @@ abstract class CreateLike //
         Built<CreateLike, CreateLikeBuilder>,
         AppAction //
 {
-  factory CreateLike([void Function(CreateLikeBuilder b) updates]) =
-      _$CreateLike;
+  factory CreateLike(String parentId, LikeType type) {
+    return _$CreateLike((CreateLikeBuilder b) {
+      b
+        ..parentId = parentId
+        ..type = type;
+    });
+  }
 
   CreateLike._();
 
+  String get parentId;
 
+  LikeType get type;
 }
 
 abstract class CreateLikeSuccessful //
@@ -24,16 +33,20 @@ abstract class CreateLikeSuccessful //
         Built<CreateLikeSuccessful, CreateLikeSuccessfulBuilder>,
         AppAction //
 {
-  factory CreateLikeSuccessful(
-          [void Function(CreateLikeSuccessfulBuilder b) updates]) =
-      _$CreateLikeSuccessful;
+  factory CreateLikeSuccessful(Like like) {
+    return _$CreateLikeSuccessful(
+        (CreateLikeSuccessfulBuilder b) => b.like = like.toBuilder());
+  }
 
   CreateLikeSuccessful._();
+
+  Like get like;
 }
 
 abstract class CreateLikeError //
     implements
         Built<CreateLikeError, CreateLikeErrorBuilder>,
+        AppAction,
         ErrorAction //
 {
   factory CreateLikeError(Object error) {

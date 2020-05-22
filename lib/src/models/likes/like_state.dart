@@ -6,7 +6,6 @@ import 'package:built_value/serializer.dart';
 import 'package:instagram_app/src/models/likes/like.dart';
 import 'package:instagram_app/src/models/serializers.dart';
 
-
 part 'like_state.g.dart';
 
 abstract class LikesState implements Built<LikesState, LikesStateBuilder> {
@@ -20,6 +19,9 @@ abstract class LikesState implements Built<LikesState, LikesStateBuilder> {
 
   // postId => like
   BuiltMap<String, BuiltList<Like>> get posts;
+
+  //commentId => like
+  BuiltMap<String, BuiltList<Like>> get comments;
 
   Map<String, dynamic> get json => serializers.serializeWith(serializer, this);
 

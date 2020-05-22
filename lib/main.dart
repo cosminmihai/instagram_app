@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:instagram_app/src/actions/initialize_app.dart';
 import 'package:instagram_app/src/data/authentication_api.dart';
@@ -18,6 +19,7 @@ import 'package:instagram_app/src/presentation/login_page.dart';
 import 'package:instagram_app/src/presentation/home/post_details.dart';
 import 'package:instagram_app/src/presentation/signup_screens/signup_page.dart';
 import 'package:instagram_app/src/reducer/reducer.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_epics/redux_epics.dart';
 
@@ -53,6 +55,15 @@ class InstagramClone extends StatelessWidget {
       child: MaterialApp(
         home: const Home(),
         theme: ThemeData.dark(),
+        onGenerateTitle: (BuildContext context) {
+          initializeDateFormatting(Localizations.localeOf(context).toString());
+          return 'Instagram Clone';
+        },
+        localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
         routes: <String, WidgetBuilder>{
           'loginPage': (BuildContext context) => const LoginPage(),
           'homepage': (BuildContext context) => HomePage(),

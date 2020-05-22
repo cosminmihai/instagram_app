@@ -29,7 +29,7 @@ class _$SendSms extends SendSms {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    final _$dynamicOther = other as dynamic;
+    final dynamic _$dynamicOther = other as dynamic;
     return other is SendSms && result == _$dynamicOther.result;
   }
 

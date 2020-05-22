@@ -29,7 +29,7 @@ class _$CreatePost extends CreatePost {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    final dynamic _$dynamicOther = other;
+    final _$dynamicOther = other as dynamic;
     return other is CreatePost && result == _$dynamicOther.result;
   }
 

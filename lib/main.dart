@@ -24,10 +24,13 @@ import 'package:redux_epics/redux_epics.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
-  final AuthApi authApi = AuthApi(auth: FirebaseAuth.instance, firestore: Firestore.instance);
-  final PostApi postApi = PostApi(firestore: Firestore.instance, storage: FirebaseStorage.instance);
+  final AuthApi authApi =
+      AuthApi(auth: FirebaseAuth.instance, firestore: Firestore.instance);
+  final PostApi postApi =
+      PostApi(firestore: Firestore.instance, storage: FirebaseStorage.instance);
   final CommentsApi commentsApi = CommentsApi(firestore: Firestore.instance);
-  final AppEpics epics = AppEpics(authApi: authApi, postApi: postApi, commentsApi: commentsApi);
+  final AppEpics epics =
+      AppEpics(authApi: authApi, postApi: postApi, commentsApi: commentsApi);
   final Store<AppState> store = Store<AppState>(
     reducer,
     initialState: AppState(),

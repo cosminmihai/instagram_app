@@ -61,7 +61,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
         title: const Text('Home Page'),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.clear),
+            icon: const Icon(Icons.clear),
             onPressed: () async {
               StoreProvider.of<AppState>(context).dispatch(LogOut());
             },

@@ -1,5 +1,6 @@
 import 'package:instagram_app/src/actions/actions.dart';
 import 'package:instagram_app/src/actions/get_action.dart';
+import 'package:instagram_app/src/actions/likes/get_likes.dart';
 import 'package:instagram_app/src/actions/post/create_post.dart';
 import 'package:instagram_app/src/actions/post/listen_for_posts.dart';
 import 'package:instagram_app/src/data/post_api.dart';
@@ -23,7 +24,8 @@ class PostEpics {
     ]);
   }
 
-  Stream<AppAction> _createPost(Stream<CreatePost> actions, EpicStore<AppState> store) {
+  Stream<AppAction> _createPost(
+      Stream<CreatePost> actions, EpicStore<AppState> store) {
     return actions //
         .flatMap((CreatePost action) => _postApi
             .createPost(
@@ -37,7 +39,8 @@ class PostEpics {
             .doOnData(action.result));
   }
 
-  Stream<AppAction> _listenForPosts(Stream<dynamic> actions, EpicStore<AppState> store) {
+  Stream<AppAction> _listenForPosts(
+      Stream<dynamic> actions, EpicStore<AppState> store) {
     return actions //
         .whereType<ListenForPosts>()
         .flatMap((ListenForPosts action) => _postApi
@@ -46,9 +49,15 @@ class PostEpics {
               return <AppAction>[
                 OnPostsEvent(posts),
                 ...posts //
-                    .where((Post post) => store.state.auth.contacts[post.uid] == null)
+                    .where((Post post) =>
+                        store.state.auth.contacts[post.uid] == null)
                     .map((Post user) => GetContact(user.uid))
-                    .toSet()
+                    .toSet(),
+                ...posts //
+                    .where(
+                        (Post post) => store.state.likes.posts[post.id] == null)
+                    .map((Post post) => GetLikes(post.id))
+                    .toSet(),
               ];
             })
             .takeUntil(actions.whereType<StopListeningForPosts>())

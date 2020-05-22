@@ -34,7 +34,7 @@ class _$CreateComment extends CreateComment {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    final dynamic _$dynamicOther = other as dynamic;
+    final _$dynamicOther = other as dynamic;
     return other is CreateComment &&
         text == other.text &&
         result == _$dynamicOther.result;

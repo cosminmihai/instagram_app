@@ -79,7 +79,7 @@ class _AddPostPageState extends State<AddPostPage> with SingleTickerProviderStat
                 Container(
                   alignment: AlignmentDirectional.bottomStart,
                   child: IconButton(
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.refresh,
                     ),
                     onPressed: () {
@@ -97,7 +97,7 @@ class _AddPostPageState extends State<AddPostPage> with SingleTickerProviderStat
               Container(
                 alignment: AlignmentDirectional.bottomEnd,
                 child: IconButton(
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.flash_off,
                     color: Colors.white,
                   ),

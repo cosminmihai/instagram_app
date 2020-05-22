@@ -10,6 +10,18 @@ class LikeApi {
 
   final Firestore _firestore;
 
+  Future<List<Like>> getLikes(String parentId) async {
+    final QuerySnapshot snapshot = await _firestore //
+        .collection('likes')
+        .where('parentId', isEqualTo: parentId)
+        .getDocuments();
+
+    return snapshot //
+        .documents
+        .map((DocumentSnapshot snapshot) => Like.fromJson(snapshot.data))
+        .toList();
+  }
+
   Future<Like> create({
     @required String uid,
     @required String parentId,
@@ -41,5 +53,6 @@ class LikeApi {
         _firestore.document('$parent/$parentId');
     await parentRef
         .updateData(<String, dynamic>{'likes': FieldValue.increment(1)});
+    return like;
   }
 }

@@ -7,6 +7,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:instagram_app/src/actions/initialize_app.dart';
 import 'package:instagram_app/src/data/authentication_api.dart';
 import 'package:instagram_app/src/data/comments_api.dart';
+import 'package:instagram_app/src/data/like_api.dart';
 import 'package:instagram_app/src/data/post_api.dart';
 import 'package:instagram_app/src/epics/app_epics.dart';
 import 'package:instagram_app/src/models/app_state.dart';
@@ -31,8 +32,12 @@ void main() {
   final PostApi postApi =
       PostApi(firestore: Firestore.instance, storage: FirebaseStorage.instance);
   final CommentsApi commentsApi = CommentsApi(firestore: Firestore.instance);
-  final AppEpics epics =
-      AppEpics(authApi: authApi, postApi: postApi, commentsApi: commentsApi);
+  final LikeApi likeApi = LikeApi(firestore: Firestore.instance);
+  final AppEpics epics = AppEpics(
+      authApi: authApi,
+      postApi: postApi,
+      commentsApi: commentsApi,
+      likeApi: likeApi);
   final Store<AppState> store = Store<AppState>(
     reducer,
     initialState: AppState(),

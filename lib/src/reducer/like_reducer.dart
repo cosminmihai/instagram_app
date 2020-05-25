@@ -59,10 +59,12 @@ LikesState _deleteLikeSuccessful(LikesState state, DeleteLikeSuccessful action) 
     if (action.type == LikeType.post) {
       final ListBuilder<Like> likes = b.posts[action.parentId].toBuilder();
       likes.removeWhere((Like item) => item.id == action.likeId);
+
       b.posts[action.parentId] = likes.build();
     } else if (action.type == LikeType.comment) {
       final ListBuilder<Like> likes = b.comments[action.parentId].toBuilder();
-      likes.removeWhere((item) => item.id == action.likeId);
+      likes.removeWhere((Like item) => item.id == action.likeId);
+
       b.comments[action.parentId] = likes.build();
     } else {
       throw ArgumentError('Unknown like type ${action.type}');

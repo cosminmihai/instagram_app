@@ -38,14 +38,14 @@ class _FeedPartState extends State<FeedPart> {
                       itemCount: posts.length,
                       itemBuilder: (BuildContext context, int index) {
                         final Post post = posts[index];
-                        final AppUser user = contacts[post.uid];
                         final DateTime localHour = DateTime.now();
                         final DateTime createdAt = post.createdAt;
-                        final Duration difference = localHour.difference(createdAt);
                         final BuiltList<Like> postLikes = likes[post.id] ?? BuiltList<Like>();
+                        final Duration difference = localHour.difference(createdAt);
                         final Like curentUserLike =
-                            postLikes.firstWhere((Like like) => like.id == currentUser.uid, orElse: () => null);
-                        final bool containsLike = currentUser != null;
+                            postLikes.firstWhere((Like like) => like.uid == currentUser.uid, orElse: () => null);
+                        final bool containsLike = curentUserLike != null;
+                        final AppUser user = contacts[post.uid];
                         String date;
                         if (DateTime.now().difference(post.createdAt) > const Duration(days: 1)) {
                           date = dayFormat.format(post.createdAt);
@@ -77,12 +77,8 @@ class _FeedPartState extends State<FeedPart> {
                                             : const Icon(Icons.favorite_border),
                                         onPressed: () {
                                           if (containsLike) {
-                                            StoreProvider.of<AppState>(context).dispatch(
-                                              DeleteLike(
-                                                  parentId: curentUserLike.parentId,
-                                                  likeId: curentUserLike.id,
-                                                  type: curentUserLike.type),
-                                            );
+                                            StoreProvider.of<AppState>(context).dispatch(DeleteLike(
+                                                parentId: post.id, likeId: curentUserLike.id, type: LikeType.post));
                                           } else {
                                             StoreProvider.of<AppState>(context)
                                                 .dispatch(CreateLike(post.id, LikeType.post));

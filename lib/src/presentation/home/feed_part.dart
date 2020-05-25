@@ -9,6 +9,7 @@ import 'package:instagram_app/src/containers/posts_likes_container.dart';
 import 'package:instagram_app/src/containers/user_container.dart';
 import 'package:instagram_app/src/models/app_state.dart';
 import 'package:instagram_app/src/models/auth/app_user.dart';
+import 'package:instagram_app/src/models/likes/delete_like.dart';
 import 'package:instagram_app/src/models/likes/like.dart';
 import 'package:instagram_app/src/models/likes/like_type.dart';
 import 'package:instagram_app/src/models/posts/post.dart';
@@ -32,8 +33,7 @@ class _FeedPartState extends State<FeedPart> {
                 final DateFormat dayFormat = DateFormat.yMMMMd().add_Hm();
                 final DateFormat hourFormat = DateFormat.Hm();
                 return PostsLikesContainer(
-                  builder: (BuildContext context,
-                      BuiltMap<String, BuiltList<Like>> likes) {
+                  builder: (BuildContext context, BuiltMap<String, BuiltList<Like>> likes) {
                     return ListView.builder(
                       itemCount: posts.length,
                       itemBuilder: (BuildContext context, int index) {
@@ -41,15 +41,13 @@ class _FeedPartState extends State<FeedPart> {
                         final AppUser user = contacts[post.uid];
                         final DateTime localHour = DateTime.now();
                         final DateTime createdAt = post.createdAt;
-                        final Duration difference =
-                            localHour.difference(createdAt);
-                        final BuiltList<Like> postLikes =
-                            likes[post.id] ?? BuiltList<Like>();
-                        final bool containsLike = postLikes
-                            .any((Like like) => like.uid == currentUser.uid);
+                        final Duration difference = localHour.difference(createdAt);
+                        final BuiltList<Like> postLikes = likes[post.id] ?? BuiltList<Like>();
+                        final Like curentUserLike =
+                            postLikes.firstWhere((Like like) => like.id == currentUser.uid, orElse: () => null);
+                        final bool containsLike = currentUser != null;
                         String date;
-                        if (DateTime.now().difference(post.createdAt) >
-                            const Duration(days: 1)) {
+                        if (DateTime.now().difference(post.createdAt) > const Duration(days: 1)) {
                           date = dayFormat.format(post.createdAt);
                         } else {
                           date = hourFormat.format(post.createdAt);
@@ -71,25 +69,34 @@ class _FeedPartState extends State<FeedPart> {
                               ),
                               Row(
                                 children: <Widget>[
-                                  IconButton(
-                                    icon: const Icon(Icons.favorite_border),
-                                    onPressed: () {
-                                      if (containsLike) {
-                                        //
-                                      } else {
-                                        StoreProvider.of<AppState>(context)
-                                            .dispatch(CreateLike(
-                                                post.id, LikeType.post));
-                                      }
-                                    },
+                                  Row(
+                                    children: [
+                                      IconButton(
+                                        icon: containsLike
+                                            ? const Icon(Icons.favorite)
+                                            : const Icon(Icons.favorite_border),
+                                        onPressed: () {
+                                          if (containsLike) {
+                                            StoreProvider.of<AppState>(context).dispatch(
+                                              DeleteLike(
+                                                  parentId: curentUserLike.parentId,
+                                                  likeId: curentUserLike.id,
+                                                  type: curentUserLike.type),
+                                            );
+                                          } else {
+                                            StoreProvider.of<AppState>(context)
+                                                .dispatch(CreateLike(post.id, LikeType.post));
+                                          }
+                                        },
+                                      ),
+                                      if (postLikes.isNotEmpty) Text('${postLikes.length}'),
+                                    ],
                                   ),
                                   IconButton(
                                     icon: const Icon(Icons.chat_bubble_outline),
                                     onPressed: () {
-                                      StoreProvider.of<AppState>(context)
-                                          .dispatch(SetSelectedPost(post.id));
-                                      Navigator.pushNamed(
-                                          context, '/commentsPage');
+                                      StoreProvider.of<AppState>(context).dispatch(SetSelectedPost(post.id));
+                                      Navigator.pushNamed(context, '/commentsPage');
                                     },
                                   ),
                                   IconButton(

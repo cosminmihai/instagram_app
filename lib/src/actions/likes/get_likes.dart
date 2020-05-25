@@ -25,6 +25,7 @@ abstract class GetLikesSuccessful //
     implements
         Built<GetLikesSuccessful, GetLikesSuccessfulBuilder>,
         AppAction //
+
     {
   factory GetLikesSuccessful(List<Like> likes, String parentId) {
     return _$GetLikesSuccessful((GetLikesSuccessfulBuilder b) {

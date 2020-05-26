@@ -3,7 +3,7 @@ import 'package:instagram_app/src/actions/likes/create_like.dart';
 import 'package:instagram_app/src/actions/likes/get_likes.dart';
 import 'package:instagram_app/src/data/like_api.dart';
 import 'package:instagram_app/src/models/app_state.dart';
-import 'package:instagram_app/src/models/likes/delete_like.dart';
+import 'package:instagram_app/src/actions/likes/delete_like.dart';
 import 'package:instagram_app/src/models/likes/like.dart';
 import 'package:meta/meta.dart';
 import 'package:redux_epics/redux_epics.dart';

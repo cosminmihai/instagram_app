@@ -9,7 +9,7 @@ import 'package:instagram_app/src/containers/posts_likes_container.dart';
 import 'package:instagram_app/src/containers/user_container.dart';
 import 'package:instagram_app/src/models/app_state.dart';
 import 'package:instagram_app/src/models/auth/app_user.dart';
-import 'package:instagram_app/src/models/likes/delete_like.dart';
+import 'package:instagram_app/src/actions/likes/delete_like.dart';
 import 'package:instagram_app/src/models/likes/like.dart';
 import 'package:instagram_app/src/models/likes/like_type.dart';
 import 'package:instagram_app/src/models/posts/post.dart';
@@ -34,6 +34,11 @@ class _FeedPartState extends State<FeedPart> {
                 final DateFormat hourFormat = DateFormat.Hm();
                 return PostsLikesContainer(
                   builder: (BuildContext context, BuiltMap<String, BuiltList<Like>> likes) {
+                    if (likes.isEmpty) {
+                      return const Center(
+                        child: Text('No posts yet.'),
+                      );
+                    }
                     return ListView.builder(
                       itemCount: posts.length,
                       itemBuilder: (BuildContext context, int index) {
@@ -42,9 +47,9 @@ class _FeedPartState extends State<FeedPart> {
                         final DateTime createdAt = post.createdAt;
                         final BuiltList<Like> postLikes = likes[post.id] ?? BuiltList<Like>();
                         final Duration difference = localHour.difference(createdAt);
-                        final Like curentUserLike =
+                        final Like currentUserLike =
                             postLikes.firstWhere((Like like) => like.uid == currentUser.uid, orElse: () => null);
-                        final bool containsLike = curentUserLike != null;
+                        final bool containsLike = currentUserLike != null;
                         final AppUser user = contacts[post.uid];
                         String date;
                         if (DateTime.now().difference(post.createdAt) > const Duration(days: 1)) {
@@ -70,7 +75,7 @@ class _FeedPartState extends State<FeedPart> {
                               Row(
                                 children: <Widget>[
                                   Row(
-                                    children: [
+                                    children: <Widget>[
                                       IconButton(
                                         icon: containsLike
                                             ? const Icon(Icons.favorite)
@@ -78,7 +83,7 @@ class _FeedPartState extends State<FeedPart> {
                                         onPressed: () {
                                           if (containsLike) {
                                             StoreProvider.of<AppState>(context).dispatch(DeleteLike(
-                                                parentId: post.id, likeId: curentUserLike.id, type: LikeType.post));
+                                                parentId: post.id, likeId: currentUserLike.id, type: LikeType.post));
                                           } else {
                                             StoreProvider.of<AppState>(context)
                                                 .dispatch(CreateLike(post.id, LikeType.post));

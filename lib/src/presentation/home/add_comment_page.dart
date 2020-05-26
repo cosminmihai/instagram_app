@@ -1,13 +1,20 @@
+import 'package:built_collection/built_collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:instagram_app/src/actions/comments/create_comment.dart';
 import 'package:instagram_app/src/actions/comments/listen_for_comments.dart';
+import 'package:instagram_app/src/actions/likes/create_like.dart';
+import 'package:instagram_app/src/actions/likes/delete_like.dart';
 import 'package:instagram_app/src/containers/comment_container.dart';
+import 'package:instagram_app/src/containers/commets_likes_container.dart';
 import 'package:instagram_app/src/containers/contacts_container.dart';
 import 'package:instagram_app/src/containers/selected_posts_container.dart';
+import 'package:instagram_app/src/containers/user_container.dart';
 import 'package:instagram_app/src/models/app_state.dart';
 import 'package:instagram_app/src/models/auth/app_user.dart';
 import 'package:instagram_app/src/models/comments/comment.dart';
+import 'package:instagram_app/src/models/likes/like.dart';
+import 'package:instagram_app/src/models/likes/like_type.dart';
 import 'package:instagram_app/src/models/posts/post.dart';
 import 'package:redux/redux.dart';
 
@@ -58,17 +65,55 @@ class _CommentsPageState extends State<CommentsPage> {
               body: Column(
                 children: <Widget>[
                   Flexible(
-                    child: CommentsContainer(
-                      builder: (BuildContext context, List<Comment> comments) {
-                        return ListView.builder(
-                          itemCount: comments.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            final Comment comment = comments[index];
-                            final AppUser contact = contacts[comment.uid];
-                            return ListTile(
-                              leading: Text(contact.username),
-                              title: Text(comment.text),
-                              subtitle: Text(comment.createdAt.toIso8601String()),
+                    child: UserContainer(
+                      builder: (BuildContext context, AppUser currentUser) {
+                        return CommentsLikesContainer(
+                          builder: (BuildContext context, BuiltMap<String, BuiltList<Like>> likes) {
+                            return CommentsContainer(
+                              builder: (BuildContext context, List<Comment> comments) {
+                                if (comments.isEmpty) {
+                                  return const Center(
+                                    child: Text('Be the first to comment.'),
+                                  );
+                                }
+                                return ListView.builder(
+                                  itemCount: comments.length,
+                                  itemBuilder: (BuildContext context, int index) {
+                                    final Comment comment = comments[index];
+                                    final AppUser contact = contacts[comment.uid];
+                                    final BuiltList<Like> commentsLike = likes[comment.id] ?? BuiltList<Like>();
+                                    final Like currentUserLike = commentsLike
+                                        .firstWhere((Like like) => like.uid == comment.uid, orElse: () => null);
+
+                                    return ListTile(
+                                      leading: Text(contact.username),
+                                      title: Text(comment.text),
+                                      subtitle: Text(comment.createdAt.toIso8601String()),
+                                      trailing: Container(
+                                        child: Row(
+                                          children: <Widget>[
+                                            IconButton(
+                                              icon: Icon(
+                                                  currentUserLike != null ? Icons.favorite : Icons.favorite_border),
+                                              onPressed: () {
+                                                if (currentUserLike != null) {
+                                                  StoreProvider.of<AppState>(context).dispatch(DeleteLike(
+                                                      likeId: currentUserLike.id,
+                                                      parentId: currentUserLike.parentId,
+                                                      type: LikeType.comment));
+                                                } else {
+                                                  StoreProvider.of<AppState>(context)
+                                                      .dispatch(CreateLike(comment.id, LikeType.comment));
+                                                }
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                );
+                              },
                             );
                           },
                         );

@@ -1,7 +1,7 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:instagram_app/src/actions/likes/create_like.dart';
 import 'package:instagram_app/src/actions/likes/get_likes.dart';
-import 'package:instagram_app/src/models/likes/delete_like.dart';
+import 'package:instagram_app/src/actions/likes/delete_like.dart';
 import 'package:instagram_app/src/models/likes/like.dart';
 import 'package:instagram_app/src/models/likes/like_state.dart';
 import 'package:instagram_app/src/models/likes/like_type.dart';

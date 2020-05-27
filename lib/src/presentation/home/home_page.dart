@@ -5,6 +5,7 @@ import 'package:instagram_app/src/actions/post/listen_for_posts.dart';
 import 'package:instagram_app/src/models/app_state.dart';
 import 'package:instagram_app/src/presentation/home/add_post_page.dart';
 import 'package:instagram_app/src/presentation/home/feed_part.dart';
+import 'package:instagram_app/src/presentation/home/profile/profile_part.dart';
 import 'package:redux/redux.dart';
 
 class HomePage extends StatefulWidget {
@@ -57,24 +58,14 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Home Page'),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.clear),
-            onPressed: () async {
-              StoreProvider.of<AppState>(context).dispatch(LogOut());
-            },
-          ),
-        ],
-      ),
+
       body: TabBarView(
         controller: tabController,
         children: <Widget>[
           FeedPart(),
           Container(color: Colors.blue),
           Container(color: Colors.white),
-          Container(color: Colors.green),
+          ProfilePart(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(

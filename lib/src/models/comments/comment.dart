@@ -21,7 +21,7 @@ abstract class Comment implements Built<Comment, CommentBuilder>, Comparable<Com
         ..uid = uid
         ..text = text
         ..createdAt = DateTime.now().toUtc()
-        ..likes = likes;
+        ..likes = 0;
     });
   }
 

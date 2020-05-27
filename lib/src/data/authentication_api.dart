@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:built_collection/built_collection.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:instagram_app/src/models/auth/app_user.dart';
@@ -13,14 +14,12 @@ class AuthApi {
   final FirebaseAuth auth;
 
   /// Returns the current login in user or null if there is no user logged in.
-
   Future<AppUser> getUser() async {
     final FirebaseUser user = await auth.currentUser();
     return _buildUser(user);
   }
 
   /// Tries to log the user in using his email and password.
-
   Future<AppUser> login(String email, String password) async {
     final AuthResult result = await auth.signInWithEmailAndPassword(email: email.trim(), password: password);
     return _buildUser(result.user);
@@ -45,13 +44,11 @@ class AuthApi {
   }
 
   /// Log the user out.
-
   Future<void> logOut() async {
     await auth.signOut();
   }
 
   ///Send the reset password link to the [email].
-
   Future<void> sendEmailPasswordRecovery(String email) async {
     await auth.sendPasswordResetEmail(email: email);
   }
@@ -74,7 +71,8 @@ class AuthApi {
         ..email = info.email
         ..birthDate = info.birthDate
         ..phone = info.phone
-        ..photoUrl = user.photoUrl;
+        ..photoUrl = user.photoUrl
+        ..following = ListBuilder<String>();
     });
     await firestore.document('users/${user.uid}').setData(appUser.json);
     return appUser;

@@ -86,10 +86,10 @@ class _CommentsPageState extends State<CommentsPage> {
                                         .firstWhere((Like like) => like.uid == comment.uid, orElse: () => null);
 
                                     return ListTile(
-                                      leading: Text(contact.username),
                                       title: Text(comment.text),
                                       subtitle: Text(comment.createdAt.toIso8601String()),
                                       trailing: Container(
+                                        width: 64.0,
                                         child: Row(
                                           children: <Widget>[
                                             IconButton(
@@ -107,6 +107,7 @@ class _CommentsPageState extends State<CommentsPage> {
                                                 }
                                               },
                                             ),
+                                            if (commentsLike.isNotEmpty) Text('${commentsLike.length}')
                                           ],
                                         ),
                                       ),

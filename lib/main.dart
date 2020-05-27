@@ -16,6 +16,8 @@ import 'package:instagram_app/src/presentation/home/add_post_page.dart';
 import 'package:instagram_app/src/presentation/forgot_password.dart';
 import 'package:instagram_app/src/presentation/home.dart';
 import 'package:instagram_app/src/presentation/home/home_page.dart';
+import 'package:instagram_app/src/presentation/home/profile/profile_part.dart';
+import 'package:instagram_app/src/presentation/home/profile/users_lists.dart';
 import 'package:instagram_app/src/presentation/login_page.dart';
 import 'package:instagram_app/src/presentation/home/post_details.dart';
 import 'package:instagram_app/src/presentation/signup_screens/signup_page.dart';
@@ -27,17 +29,11 @@ import 'package:redux_epics/redux_epics.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
-  final AuthApi authApi =
-      AuthApi(auth: FirebaseAuth.instance, firestore: Firestore.instance);
-  final PostApi postApi =
-      PostApi(firestore: Firestore.instance, storage: FirebaseStorage.instance);
+  final AuthApi authApi = AuthApi(auth: FirebaseAuth.instance, firestore: Firestore.instance);
+  final PostApi postApi = PostApi(firestore: Firestore.instance, storage: FirebaseStorage.instance);
   final CommentsApi commentsApi = CommentsApi(firestore: Firestore.instance);
   final LikeApi likeApi = LikeApi(firestore: Firestore.instance);
-  final AppEpics epics = AppEpics(
-      authApi: authApi,
-      postApi: postApi,
-      commentsApi: commentsApi,
-      likeApi: likeApi);
+  final AppEpics epics = AppEpics(authApi: authApi, postApi: postApi, commentsApi: commentsApi, likeApi: likeApi);
   final Store<AppState> store = Store<AppState>(
     reducer,
     initialState: AppState(),
@@ -77,6 +73,7 @@ class InstagramClone extends StatelessWidget {
           'addPhotoPage': (BuildContext context) => AddPostPage(),
           '/postDetails': (BuildContext context) => const PostDetails(),
           '/commentsPage': (_) => const CommentsPage(),
+          '/usersList': (_) => const UsersList(),
         },
       ),
     );

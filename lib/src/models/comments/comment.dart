@@ -39,6 +39,7 @@ abstract class Comment implements Built<Comment, CommentBuilder>, Comparable<Com
 
   DateTime get createdAt;
 
+  @nullable
   int get likes;
 
   @override

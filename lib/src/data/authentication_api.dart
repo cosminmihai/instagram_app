@@ -6,12 +6,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:instagram_app/src/models/auth/app_user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:instagram_app/src/models/auth/registration_info.dart';
+import 'package:algolia/algolia.dart';
 
 class AuthApi {
-  const AuthApi({@required this.auth, @required this.firestore});
+  const AuthApi({@required this.auth, @required this.firestore, @required this.index});
 
   final Firestore firestore;
   final FirebaseAuth auth;
+  final AlgoliaIndexReference index;
 
   /// Returns the current login in user or null if there is no user logged in.
   Future<AppUser> getUser() async {
@@ -134,5 +136,15 @@ class AuthApi {
   Future<AppUser> getContacts(String uid) async {
     final DocumentSnapshot snapshot = await firestore.document('users/$uid').get();
     return AppUser.fromJson(snapshot.data);
+  }
+
+  Future<List<AppUser>> searchUsers(String query) async {
+    final AlgoliaQuerySnapshot result = await index.search(query).getObjects();
+
+    if (result.empty) {
+      return <AppUser>[];
+    } else {
+      return result.hits.map((AlgoliaObjectSnapshot object) => AppUser.fromJson(object.data)).toList();
+    }
   }
 }

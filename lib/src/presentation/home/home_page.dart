@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:instagram_app/src/actions/auth/logout.dart';
 import 'package:instagram_app/src/actions/post/listen_for_posts.dart';
 import 'package:instagram_app/src/models/app_state.dart';
 import 'package:instagram_app/src/presentation/home/add_post_page.dart';

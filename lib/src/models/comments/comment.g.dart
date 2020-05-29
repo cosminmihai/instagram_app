@@ -30,10 +30,13 @@ class _$CommentSerializer implements StructuredSerializer<Comment> {
       'createdAt',
       serializers.serialize(object.createdAt,
           specifiedType: const FullType(DateTime)),
-      'likes',
-      serializers.serialize(object.likes, specifiedType: const FullType(int)),
     ];
-
+    if (object.likes != null) {
+      result
+        ..add('likes')
+        ..add(serializers.serialize(object.likes,
+            specifiedType: const FullType(int)));
+    }
     return result;
   }
 
@@ -113,9 +116,6 @@ class _$Comment extends Comment {
     }
     if (createdAt == null) {
       throw new BuiltValueNullFieldError('Comment', 'createdAt');
-    }
-    if (likes == null) {
-      throw new BuiltValueNullFieldError('Comment', 'likes');
     }
   }
 

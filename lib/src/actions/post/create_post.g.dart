@@ -20,7 +20,8 @@ class _$CreatePost extends CreatePost {
   }
 
   @override
-  CreatePost rebuild(void Function(CreatePostBuilder) updates) => (toBuilder()..update(updates)).build();
+  CreatePost rebuild(void Function(CreatePostBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   CreatePostBuilder toBuilder() => new CreatePostBuilder()..replace(this);
@@ -28,7 +29,7 @@ class _$CreatePost extends CreatePost {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    final dynamic _$dynamicOther = other as dynamic;
+    final dynamic _$dynamicOther = other;
     return other is CreatePost && result == _$dynamicOther.result;
   }
 
@@ -39,7 +40,8 @@ class _$CreatePost extends CreatePost {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('CreatePost')..add('result', result)).toString();
+    return (newBuiltValueToStringHelper('CreatePost')..add('result', result))
+        .toString();
   }
 }
 
@@ -47,9 +49,7 @@ class CreatePostBuilder implements Builder<CreatePost, CreatePostBuilder> {
   _$CreatePost _$v;
 
   ActionResult _result;
-
   ActionResult get result => _$this._result;
-
   set result(ActionResult result) => _$this._result = result;
 
   CreatePostBuilder();
@@ -87,7 +87,8 @@ class _$CreatePostSuccessful extends CreatePostSuccessful {
   @override
   final Post post;
 
-  factory _$CreatePostSuccessful([void Function(CreatePostSuccessfulBuilder) updates]) =>
+  factory _$CreatePostSuccessful(
+          [void Function(CreatePostSuccessfulBuilder) updates]) =>
       (new CreatePostSuccessfulBuilder()..update(updates)).build();
 
   _$CreatePostSuccessful._({this.post}) : super._() {
@@ -97,11 +98,13 @@ class _$CreatePostSuccessful extends CreatePostSuccessful {
   }
 
   @override
-  CreatePostSuccessful rebuild(void Function(CreatePostSuccessfulBuilder) updates) =>
+  CreatePostSuccessful rebuild(
+          void Function(CreatePostSuccessfulBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  CreatePostSuccessfulBuilder toBuilder() => new CreatePostSuccessfulBuilder()..replace(this);
+  CreatePostSuccessfulBuilder toBuilder() =>
+      new CreatePostSuccessfulBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -116,17 +119,18 @@ class _$CreatePostSuccessful extends CreatePostSuccessful {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('CreatePostSuccessful')..add('post', post)).toString();
+    return (newBuiltValueToStringHelper('CreatePostSuccessful')
+          ..add('post', post))
+        .toString();
   }
 }
 
-class CreatePostSuccessfulBuilder implements Builder<CreatePostSuccessful, CreatePostSuccessfulBuilder> {
+class CreatePostSuccessfulBuilder
+    implements Builder<CreatePostSuccessful, CreatePostSuccessfulBuilder> {
   _$CreatePostSuccessful _$v;
 
   PostBuilder _post;
-
   PostBuilder get post => _$this._post ??= new PostBuilder();
-
   set post(PostBuilder post) => _$this._post = post;
 
   CreatePostSuccessfulBuilder();
@@ -163,7 +167,8 @@ class CreatePostSuccessfulBuilder implements Builder<CreatePostSuccessful, Creat
         _$failedField = 'post';
         post.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError('CreatePostSuccessful', _$failedField, e.toString());
+        throw new BuiltValueNestedFieldError(
+            'CreatePostSuccessful', _$failedField, e.toString());
       }
       rethrow;
     }
@@ -186,10 +191,12 @@ class _$CreatePostError extends CreatePostError {
   }
 
   @override
-  CreatePostError rebuild(void Function(CreatePostErrorBuilder) updates) => (toBuilder()..update(updates)).build();
+  CreatePostError rebuild(void Function(CreatePostErrorBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
-  CreatePostErrorBuilder toBuilder() => new CreatePostErrorBuilder()..replace(this);
+  CreatePostErrorBuilder toBuilder() =>
+      new CreatePostErrorBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -204,17 +211,17 @@ class _$CreatePostError extends CreatePostError {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('CreatePostError')..add('error', error)).toString();
+    return (newBuiltValueToStringHelper('CreatePostError')..add('error', error))
+        .toString();
   }
 }
 
-class CreatePostErrorBuilder implements Builder<CreatePostError, CreatePostErrorBuilder> {
+class CreatePostErrorBuilder
+    implements Builder<CreatePostError, CreatePostErrorBuilder> {
   _$CreatePostError _$v;
 
   Object _error;
-
   Object get error => _$this._error;
-
   set error(Object error) => _$this._error = error;
 
   CreatePostErrorBuilder();

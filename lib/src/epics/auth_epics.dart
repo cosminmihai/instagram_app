@@ -6,6 +6,8 @@ import 'package:instagram_app/src/actions/auth/reserve_username.dart';
 import 'package:instagram_app/src/actions/auth/reset_password.dart';
 import 'package:instagram_app/src/actions/auth/search_users.dart';
 import 'package:instagram_app/src/actions/auth/send_sms.dart';
+import 'package:instagram_app/src/actions/auth/start_following.dart';
+import 'package:instagram_app/src/actions/auth/stop_following.dart';
 import 'package:instagram_app/src/actions/get_action.dart';
 import 'package:instagram_app/src/data/authentication_api.dart';
 import 'package:instagram_app/src/models/app_state.dart';
@@ -31,6 +33,8 @@ class AuthEpics {
       TypedEpic<AppState, SendSms>(_sendSms),
       TypedEpic<AppState, GetContact>(_getContact),
       TypedEpic<AppState, SearchUsers>(_searchUsers),
+      TypedEpic<AppState, StartFollowing>(_startFollowing),
+      TypedEpic<AppState, StopFollowing>(_stopFollowing),
     ]);
   }
 
@@ -110,9 +114,27 @@ class AuthEpics {
     return actions //
         .debounceTime(const Duration(milliseconds: 300))
         .switchMap((SearchUsers action) => _authApi
-            .searchUsers(action.query)
+            .searchUsers(query: action.query, uid: store.state.auth.user.uid)
             .asStream()
             .map<AppAction>((List<AppUser> users) => SearchUsersSuccessful(users))
             .onErrorReturnWith((dynamic error) => SearchUsersError(error)));
+  }
+
+  Stream<AppAction> _startFollowing(Stream<StartFollowing> actions, EpicStore<AppState> store) {
+    return actions //
+        .flatMap((StartFollowing action) => _authApi
+            .startFollowing(uid: store.state.auth.user.uid, followingUid: action.followingUid)
+            .asStream()
+            .map<AppAction>((_) => StartFollowingSuccessful(action.followingUid))
+            .onErrorReturnWith((dynamic error) => StartFollowingError(error)));
+  }
+
+  Stream<AppAction> _stopFollowing(Stream<StopFollowing> actions, EpicStore<AppState> store) {
+    return actions //
+        .flatMap((StopFollowing action) => _authApi
+            .stopFollowing(uid: store.state.auth.user.uid, followingUid: action.followingUid)
+            .asStream()
+            .map<AppAction>((_) => StopFollowingSuccessful(action.followingUid))
+            .onErrorReturnWith((dynamic error) => StopFollowingError(error)));
   }
 }

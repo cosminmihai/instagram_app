@@ -5,7 +5,7 @@ import 'package:instagram_app/src/models/app_state.dart';
 import 'package:instagram_app/src/presentation/home/add_post_page.dart';
 import 'package:instagram_app/src/presentation/home/feed_part.dart';
 import 'package:instagram_app/src/presentation/home/profile/profile_part.dart';
-import 'package:instagram_app/src/presentation/home/search_part.dart';
+import 'package:instagram_app/src/presentation/home/search/search_part.dart';
 import 'package:redux/redux.dart';
 
 class HomePage extends StatefulWidget {

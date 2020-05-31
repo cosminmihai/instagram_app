@@ -141,19 +141,43 @@ class AuthApi {
 
     return completer.future;
   }
+
   /// Provides all the users.
   Future<AppUser> getContacts(String uid) async {
     final DocumentSnapshot snapshot = await _firestore.document('users/$uid').get();
     return AppUser.fromJson(snapshot.data);
   }
-  /// Search for users.
-  Future<List<AppUser>> searchUsers(String query) async {
-    final AlgoliaQuerySnapshot result = await _index.search(query).getObjects();
 
+  /// Search for users.
+  Future<List<AppUser>> searchUsers({
+    @required String query,
+    @required String uid,
+  }) async {
+    final AlgoliaQuerySnapshot result = await _index.setFacetFilter('uid:-$uid').search(query).getObjects();
     if (result.empty) {
       return <AppUser>[];
     } else {
       return result.hits.map((AlgoliaObjectSnapshot object) => AppUser.fromJson(object.data)).toList();
     }
+  }
+
+  /// Follow a specific user.
+  Future<void> startFollowing({
+    @required String uid,
+    @required String followingUid,
+  }) async {
+    await _firestore.document('users/$uid').updateData(<String, dynamic>{
+      'following': FieldValue.arrayUnion(<String>[followingUid])
+    });
+  }
+
+  /// Un-follow a specific user.
+  Future<void> stopFollowing({
+    @required String uid,
+    @required String followingUid,
+  }) async {
+    await _firestore.document('users/$uid').updateData(<String, dynamic>{
+      'following': FieldValue.arrayRemove(<String>[followingUid])
+    });
   }
 }

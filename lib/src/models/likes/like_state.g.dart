@@ -51,14 +51,14 @@ class _$LikesStateSerializer implements StructuredSerializer<LikesState> {
               specifiedType: const FullType(BuiltMap, const [
                 const FullType(String),
                 const FullType(BuiltList, const [const FullType(Like)])
-              ])) as BuiltMap<dynamic, dynamic>);
+              ])));
           break;
         case 'comments':
           result.comments.replace(serializers.deserialize(value,
               specifiedType: const FullType(BuiltMap, const [
                 const FullType(String),
                 const FullType(BuiltList, const [const FullType(Like)])
-              ])) as BuiltMap<dynamic, dynamic>);
+              ])));
           break;
       }
     }

@@ -64,16 +64,14 @@ class _$AuthStateSerializer implements StructuredSerializer<AuthState> {
           break;
         case 'contacts':
           result.contacts.replace(serializers.deserialize(value,
-              specifiedType: const FullType(BuiltMap, const [
-                const FullType(String),
-                const FullType(AppUser)
-              ])) as BuiltMap<dynamic, dynamic>);
+              specifiedType: const FullType(BuiltMap,
+                  const [const FullType(String), const FullType(AppUser)])));
           break;
         case 'searchResults':
           result.searchResults.replace(serializers.deserialize(value,
                   specifiedType: const FullType(
                       BuiltList, const [const FullType(AppUser)]))
-              as BuiltList<dynamic>);
+              as BuiltList<Object>);
           break;
       }
     }

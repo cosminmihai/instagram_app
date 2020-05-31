@@ -51,10 +51,8 @@ class _$PostsStateSerializer implements StructuredSerializer<PostsState> {
       switch (key) {
         case 'posts':
           result.posts.replace(serializers.deserialize(value,
-              specifiedType: const FullType(BuiltMap, const [
-                const FullType(String),
-                const FullType(Post)
-              ])) as BuiltMap<dynamic, dynamic>);
+              specifiedType: const FullType(BuiltMap,
+                  const [const FullType(String), const FullType(Post)])));
           break;
         case 'savePostInfo':
           result.savePostInfo.replace(serializers.deserialize(value,

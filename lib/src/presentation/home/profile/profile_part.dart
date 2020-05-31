@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:instagram_app/src/actions/actions.dart';
+import 'package:instagram_app/src/actions/auth/logout.dart';
 import 'package:instagram_app/src/containers/current_user_posts_count_container.dart';
 import 'package:instagram_app/src/containers/user_container.dart';
+import 'package:instagram_app/src/models/app_state.dart';
 import 'package:instagram_app/src/models/auth/app_user.dart';
 
 class ProfilePart extends StatelessWidget {
@@ -13,6 +17,13 @@ class ProfilePart extends StatelessWidget {
         children: <Widget>[
           AppBar(
             title: Text(user.username),
+            actions: <Widget>[
+              IconButton(
+                  icon: const Icon(Icons.close),
+                  onPressed: () {
+                    StoreProvider.of<AppState>(context).dispatch(LogOut());
+                  }),
+            ],
           ),
           Flexible(
             child: ListView(

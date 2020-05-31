@@ -16,7 +16,6 @@ import 'package:instagram_app/src/presentation/home/add_post_page.dart';
 import 'package:instagram_app/src/presentation/forgot_password.dart';
 import 'package:instagram_app/src/presentation/home.dart';
 import 'package:instagram_app/src/presentation/home/home_page.dart';
-import 'package:instagram_app/src/presentation/home/profile/profile_part.dart';
 import 'package:instagram_app/src/presentation/home/profile/users_lists.dart';
 import 'package:instagram_app/src/presentation/login_page.dart';
 import 'package:instagram_app/src/presentation/home/post_details.dart';
@@ -25,11 +24,13 @@ import 'package:instagram_app/src/reducer/reducer.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_epics/redux_epics.dart';
+import 'package:algolia/algolia.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-
-  final AuthApi authApi = AuthApi(auth: FirebaseAuth.instance, firestore: Firestore.instance);
+  const Algolia algolia = Algolia.init(applicationId: 'KDH7Q4ILAX', apiKey: 'd6a6db4ca16c4675e9a8f1f42c593cef');
+  final AlgoliaIndexReference index = algolia.index('users');
+  final AuthApi authApi = AuthApi(auth: FirebaseAuth.instance, firestore: Firestore.instance, index: index);
   final PostApi postApi = PostApi(firestore: Firestore.instance, storage: FirebaseStorage.instance);
   final CommentsApi commentsApi = CommentsApi(firestore: Firestore.instance);
   final LikeApi likeApi = LikeApi(firestore: Firestore.instance);

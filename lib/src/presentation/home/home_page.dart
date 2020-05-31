@@ -5,6 +5,7 @@ import 'package:instagram_app/src/models/app_state.dart';
 import 'package:instagram_app/src/presentation/home/add_post_page.dart';
 import 'package:instagram_app/src/presentation/home/feed_part.dart';
 import 'package:instagram_app/src/presentation/home/profile/profile_part.dart';
+import 'package:instagram_app/src/presentation/home/search_part.dart';
 import 'package:redux/redux.dart';
 
 class HomePage extends StatefulWidget {
@@ -57,14 +58,13 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       body: TabBarView(
         controller: tabController,
         children: <Widget>[
-          FeedPart(),
-          Container(color: Colors.blue),
+          const FeedPart(),
+          const SearchPart(),
           Container(color: Colors.white),
-          ProfilePart(),
+          const ProfilePart(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(

@@ -34,7 +34,7 @@ class _$ResetPassword extends ResetPassword {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    final dynamic _$dynamicOther = other;
+    final dynamic _$dynamicOther = other as dynamic;
     return other is ResetPassword &&
         result == _$dynamicOther.result &&
         email == other.email;

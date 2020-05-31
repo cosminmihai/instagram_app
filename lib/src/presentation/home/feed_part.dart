@@ -17,6 +17,8 @@ import 'package:timeago/timeago.dart';
 import 'package:intl/intl.dart';
 
 class FeedPart extends StatefulWidget {
+  const FeedPart({Key key}) : super(key: key);
+
   @override
   _FeedPartState createState() => _FeedPartState();
 }

@@ -107,7 +107,7 @@ class _$AppUserSerializer implements StructuredSerializer<AppUser> {
           result.following.replace(serializers.deserialize(value,
                   specifiedType:
                       const FullType(BuiltList, const [const FullType(String)]))
-              as BuiltList<Object>);
+              as BuiltList<dynamic>);
           break;
       }
     }

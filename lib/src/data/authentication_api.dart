@@ -9,21 +9,30 @@ import 'package:instagram_app/src/models/auth/registration_info.dart';
 import 'package:algolia/algolia.dart';
 
 class AuthApi {
-  const AuthApi({@required this.auth, @required this.firestore, @required this.index});
+  const AuthApi({
+    @required FirebaseAuth auth,
+    @required Firestore firestore,
+    @required AlgoliaIndexReference index,
+  })  : assert(auth != null),
+        assert(firestore != null),
+        assert(index != null),
+        _auth = auth,
+        _firestore = firestore,
+        _index = index;
 
-  final Firestore firestore;
-  final FirebaseAuth auth;
-  final AlgoliaIndexReference index;
+  final Firestore _firestore;
+  final FirebaseAuth _auth;
+  final AlgoliaIndexReference _index;
 
   /// Returns the current login in user or null if there is no user logged in.
   Future<AppUser> getUser() async {
-    final FirebaseUser user = await auth.currentUser();
+    final FirebaseUser user = await _auth.currentUser();
     return _buildUser(user);
   }
 
   /// Tries to log the user in using his email and password.
   Future<AppUser> login(String email, String password) async {
-    final AuthResult result = await auth.signInWithEmailAndPassword(email: email.trim(), password: password);
+    final AuthResult result = await _auth.signInWithEmailAndPassword(email: email.trim(), password: password);
     return _buildUser(result.user);
   }
 
@@ -31,7 +40,7 @@ class AuthApi {
   Future<AppUser> register(RegistrationInfo info) async {
     AuthResult result;
     if (info.email != null) {
-      result = await auth.createUserWithEmailAndPassword(email: info.email, password: info.password);
+      result = await _auth.createUserWithEmailAndPassword(email: info.email, password: info.password);
     } else {
       assert(info.phone != null);
       assert(info.verificationId != null);
@@ -39,7 +48,7 @@ class AuthApi {
 
       final AuthCredential credential =
           PhoneAuthProvider.getCredential(verificationId: info.verificationId, smsCode: info.smsCode);
-      result = await auth.signInWithCredential(credential);
+      result = await _auth.signInWithCredential(credential);
     }
 
     return _buildUser(result.user, info);
@@ -47,12 +56,12 @@ class AuthApi {
 
   /// Log the user out.
   Future<void> logOut() async {
-    await auth.signOut();
+    await _auth.signOut();
   }
 
   ///Send the reset password link to the [email].
   Future<void> sendEmailPasswordRecovery(String email) async {
-    await auth.sendPasswordResetEmail(email: email);
+    await _auth.sendPasswordResetEmail(email: email);
   }
 
   ///Create a Firebase user and store the data in Firestore.
@@ -60,7 +69,7 @@ class AuthApi {
     if (user == null) {
       return null;
     }
-    final DocumentSnapshot snapshot = await firestore.document('users/${user.uid}').get();
+    final DocumentSnapshot snapshot = await _firestore.document('users/${user.uid}').get();
     if (snapshot.exists && info == null) {
       return AppUser.fromJson(snapshot.data);
     }
@@ -76,7 +85,7 @@ class AuthApi {
         ..photoUrl = user.photoUrl
         ..following = ListBuilder<String>();
     });
-    await firestore.document('users/${user.uid}').setData(appUser.json);
+    await _firestore.document('users/${user.uid}').setData(appUser.json);
     return appUser;
   }
 
@@ -84,7 +93,7 @@ class AuthApi {
     if (email != null) {
       final String username = email.split('@')[0];
 
-      final QuerySnapshot snapshot = await firestore
+      final QuerySnapshot snapshot = await _firestore
           .collection('users') //
           .where('username', isEqualTo: username)
           .getDocuments();
@@ -95,7 +104,7 @@ class AuthApi {
     }
 
     final String username = displayName.split(' ').join('.').toLowerCase();
-    final QuerySnapshot snapshot = await firestore
+    final QuerySnapshot snapshot = await _firestore
         .collection('users') //
         .where('username', isEqualTo: username)
         .getDocuments();
@@ -112,7 +121,7 @@ class AuthApi {
   Future<String> sendSms(String phone) async {
     final Completer<String> completer = Completer<String>();
 
-    await auth.verifyPhoneNumber(
+    await _auth.verifyPhoneNumber(
       phoneNumber: '+4$phone',
       timeout: const Duration(seconds: 60),
       verificationCompleted: (_) {
@@ -132,14 +141,14 @@ class AuthApi {
 
     return completer.future;
   }
-
+  /// Provides all the users.
   Future<AppUser> getContacts(String uid) async {
-    final DocumentSnapshot snapshot = await firestore.document('users/$uid').get();
+    final DocumentSnapshot snapshot = await _firestore.document('users/$uid').get();
     return AppUser.fromJson(snapshot.data);
   }
-
+  /// Search for users.
   Future<List<AppUser>> searchUsers(String query) async {
-    final AlgoliaQuerySnapshot result = await index.search(query).getObjects();
+    final AlgoliaQuerySnapshot result = await _index.search(query).getObjects();
 
     if (result.empty) {
       return <AppUser>[];

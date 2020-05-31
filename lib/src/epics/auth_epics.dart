@@ -107,7 +107,7 @@ class AuthEpics {
   }
 
   Stream<AppAction> _searchUsers(Stream<SearchUsers> actions, EpicStore<AppState> store) {
-    actions //
+    return actions //
         .debounceTime(const Duration(milliseconds: 300))
         .switchMap((SearchUsers action) => _authApi
             .searchUsers(action.query)

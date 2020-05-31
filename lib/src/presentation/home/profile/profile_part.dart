@@ -4,6 +4,8 @@ import 'package:instagram_app/src/containers/user_container.dart';
 import 'package:instagram_app/src/models/auth/app_user.dart';
 
 class ProfilePart extends StatelessWidget {
+  const ProfilePart({Key key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return UserContainer(builder: (BuildContext context, AppUser user) {
@@ -16,9 +18,9 @@ class ProfilePart extends StatelessWidget {
             child: ListView(
               children: <Widget>[
                 Container(
-                  padding: const EdgeInsets.all(15.0),
+                  padding: const EdgeInsets.all(8.0),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Column(
                         children: <Widget>[

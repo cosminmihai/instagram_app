@@ -1,6 +1,5 @@
 library create_like.dart;
 
-import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:instagram_app/src/actions/actions.dart';
 import 'package:instagram_app/src/models/likes/like.dart';

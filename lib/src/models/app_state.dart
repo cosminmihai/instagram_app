@@ -3,7 +3,6 @@ library app_state;
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:instagram_app/src/models/auth/auth_state.dart';
-import 'package:instagram_app/src/models/chats/chat.dart';
 import 'package:instagram_app/src/models/chats/chats_state.dart';
 import 'package:instagram_app/src/models/comments/comments_state.dart';
 import 'package:instagram_app/src/models/likes/like_state.dart';

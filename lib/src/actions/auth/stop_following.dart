@@ -27,7 +27,7 @@ abstract class StopFollowingSuccessful //
         AppAction //
 {
   factory StopFollowingSuccessful(String followingUid){
-    return _$StopFollowingSuccessful((b){
+    return _$StopFollowingSuccessful((StopFollowingSuccessfulBuilder b){
       b.followingUid = followingUid;
     });
   }

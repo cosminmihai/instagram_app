@@ -7,6 +7,9 @@ import 'package:instagram_app/src/models/app_state.dart';
 import 'package:instagram_app/src/models/auth/app_user.dart';
 import 'package:instagram_app/src/models/auth/auth_state.dart';
 import 'package:instagram_app/src/models/auth/registration_info.dart';
+import 'package:instagram_app/src/models/chats/chat.dart';
+import 'package:instagram_app/src/models/chats/chats_state.dart';
+import 'package:instagram_app/src/models/chats/message.dart';
 import 'package:instagram_app/src/models/comments/comment.dart';
 import 'package:instagram_app/src/models/comments/comments_state.dart';
 import 'package:instagram_app/src/models/likes/like.dart';
@@ -30,7 +33,11 @@ part 'serializers.g.dart';
   CommentsState,
   LikesState,
   Like,
+  Message,
   LikeType,
+  ChatsState,
+  Chat,
+  Message,
 ])
 Serializers serializers = (_$serializers.toBuilder() //
       ..addPlugin(StandardJsonPlugin()))

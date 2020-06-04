@@ -62,7 +62,7 @@ export const onCreateUser = functions
 // noinspection JSUnusedGlobalSymbols
 export const checkUsername = functions
     .https
-    .onCall(async (data: any, context) => {
+    .onCall(async (data: any) => {
         if (!data.username) {
             throw new functions.https.HttpsError("invalid-argument", "You need to provide a username");
         }
@@ -74,4 +74,12 @@ export const checkUsername = functions
             .get();
 
         return snapshot.docs.length === 0 ? username : null;
+    });
+
+// noinspection JSUnusedGlobalSymbols
+export const setLastMessage = functions
+    .firestore.document('messages/{message_id}')
+    .onCreate(async snapshot => {
+        const chatId: String = snapshot.data()!.id;
+        await admin.firestore().doc(`chats/${chatId}`).update({'lastMessage': snapshot.data()});
     });

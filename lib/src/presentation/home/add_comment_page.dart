@@ -80,7 +80,6 @@ class _CommentsPageState extends State<CommentsPage> {
                                   itemCount: comments.length,
                                   itemBuilder: (BuildContext context, int index) {
                                     final Comment comment = comments[index];
-                                    final AppUser contact = contacts[comment.uid];
                                     final BuiltList<Like> commentsLike = likes[comment.id] ?? BuiltList<Like>();
                                     final Like currentUserLike = commentsLike
                                         .firstWhere((Like like) => like.uid == comment.uid, orElse: () => null);

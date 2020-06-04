@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +32,11 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   const Algolia algolia = Algolia.init(applicationId: 'KDH7Q4ILAX', apiKey: 'd6a6db4ca16c4675e9a8f1f42c593cef');
   final AlgoliaIndexReference index = algolia.index('users');
-  final AuthApi authApi = AuthApi(auth: FirebaseAuth.instance, firestore: Firestore.instance, index: index);
+  final AuthApi authApi = AuthApi(
+      auth: FirebaseAuth.instance,
+      firestore: Firestore.instance,
+      index: index,
+      cloudFunctions: CloudFunctions.instance);
   final PostApi postApi = PostApi(firestore: Firestore.instance, storage: FirebaseStorage.instance);
   final CommentsApi commentsApi = CommentsApi(firestore: Firestore.instance);
   final LikeApi likeApi = LikeApi(firestore: Firestore.instance);

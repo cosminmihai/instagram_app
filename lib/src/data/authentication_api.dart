@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:built_collection/built_collection.dart';
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:instagram_app/src/models/auth/app_user.dart';
@@ -13,16 +14,20 @@ class AuthApi {
     @required FirebaseAuth auth,
     @required Firestore firestore,
     @required AlgoliaIndexReference index,
+    @required CloudFunctions cloudFunctions,
   })  : assert(auth != null),
         assert(firestore != null),
         assert(index != null),
+        assert(cloudFunctions != null),
         _auth = auth,
         _firestore = firestore,
-        _index = index;
+        _index = index,
+        _cloudFunctions = cloudFunctions;
 
   final Firestore _firestore;
   final FirebaseAuth _auth;
   final AlgoliaIndexReference _index;
+  final CloudFunctions _cloudFunctions;
 
   /// Returns the current login in user or null if there is no user logged in.
   Future<AppUser> getUser() async {
@@ -92,29 +97,25 @@ class AuthApi {
   Future<String> reserveUsername({@required String email, @required String displayName}) async {
     if (email != null) {
       final String username = email.split('@')[0];
-
-      final QuerySnapshot snapshot = await _firestore
-          .collection('users') //
-          .where('username', isEqualTo: username)
-          .getDocuments();
-
-      if (snapshot.documents.isEmpty) {
+      if (await _checkUsername(username) != null) {
         return username;
       }
     }
 
-    final String username = displayName.split(' ').join('.').toLowerCase();
-    final QuerySnapshot snapshot = await _firestore
-        .collection('users') //
-        .where('username', isEqualTo: username)
-        .getDocuments();
-
-    if (snapshot.documents.isEmpty) {
+    String username = displayName.split(' ').join('.').toLowerCase();
+    if (await _checkUsername(username) != null) {
       return username;
     }
 
     final Random random = Random();
-    return '${email.split('@')[0]}${random.nextInt(1 << 32)}';
+
+    if (email != null) {
+      username = '${email.split('@')[0]}${random.nextInt(1 << 32)}';
+    } else {
+      username = '${displayName.split(' ').join('.')}${random.nextInt(1 << 32)}';
+    }
+
+    return username;
   }
 
   /// Send an SMS to the user and return the verificationId to be used for login
@@ -179,5 +180,12 @@ class AuthApi {
     await _firestore.document('users/$uid').updateData(<String, dynamic>{
       'following': FieldValue.arrayRemove(<String>[followingUid])
     });
+  }
+
+  /// Checks if username exists in firebase.
+  Future<String> _checkUsername(String username) async {
+    final HttpsCallable checkUsername = _cloudFunctions.getHttpsCallable(functionName: 'checkUsername');
+    final HttpsCallableResult result = await checkUsername(<String, String>{'username': username});
+    return result.data;
   }
 }

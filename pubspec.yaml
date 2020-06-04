@@ -21,7 +21,7 @@ dependencies:
   built_value: ^7.1.0
   built_collection: ^4.3.2
   camera: ^0.5.8+2
-  path_provider: ^1.6.9
+  path_provider: ^1.6.10
   uuid: ^2.0.4
   firebase_storage: ^3.1.6
   firebase_messaging: ^6.0.16
@@ -29,6 +29,7 @@ dependencies:
   rxdart: ^0.24.1
   timeago: ^2.0.26
   algolia: ^0.1.7
+  cloud_functions: ^0.5.0
 
 dev_dependencies:
   flutter_test:

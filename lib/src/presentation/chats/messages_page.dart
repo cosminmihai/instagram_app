@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:instagram_app/src/actions/chats/create_message.dart';
@@ -28,7 +29,8 @@ class _MessagesPageState extends State<MessagesPage> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      store = StoreProvider.of<AppState>(context).dispatch(ListenForMessages());
+      store = StoreProvider.of<AppState>(context);
+      store.dispatch(ListenForMessages());
     });
   }
 
@@ -51,8 +53,10 @@ class _MessagesPageState extends State<MessagesPage> {
                 }
 
                 final String otherUid = chat.users.firstWhere((String uid) => uid != currentUser.uid);
-
                 final AppUser user = contacts[otherUid];
+                if (user == null) {
+                  return const Center(child: CircularProgressIndicator());
+                }
 
                 return Scaffold(
                   appBar: AppBar(
@@ -70,11 +74,30 @@ class _MessagesPageState extends State<MessagesPage> {
                             }
 
                             return ListView.builder(
+                              reverse: true,
                               itemCount: messages.length,
+                              padding: const EdgeInsets.all(16.0),
                               itemBuilder: (BuildContext context, int index) {
                                 final Message message = messages[index];
+                                final bool isMe = message.uid == currentUser.uid;
 
-                                return Text(message.message);
+                                return Container(
+                                  alignment: isMe ? AlignmentDirectional.centerEnd : AlignmentDirectional.centerStart,
+                                  child: Container(
+                                    margin: const EdgeInsets.all(1.0),
+                                    padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
+                                    decoration: BoxDecoration(
+                                      color: isMe ? Theme.of(context).primaryColor : Theme.of(context).accentColor,
+                                      borderRadius: BorderRadius.circular(8.0),
+                                    ),
+                                    child: Text(
+                                      message.message,
+                                      style: TextStyle(
+                                        color: isMe ? Colors.white : Colors.black,
+                                      ),
+                                    ),
+                                  ),
+                                );
                               },
                             );
                           },

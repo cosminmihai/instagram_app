@@ -12,9 +12,13 @@ abstract class ListenForPosts //
         Built<ListenForPosts, ListenForPostsBuilder>,
         AppAction //
 {
-  factory ListenForPosts([void Function(ListenForPostsBuilder b) updates]) = _$ListenForPosts;
+  factory ListenForPosts(String uid) {
+    return _$ListenForPosts((ListenForPostsBuilder b) => b.uid = uid);
+  }
 
   ListenForPosts._();
+
+  String get uid;
 }
 
 abstract class StopListeningForPosts //
@@ -22,9 +26,13 @@ abstract class StopListeningForPosts //
         Built<StopListeningForPosts, StopListeningForPostsBuilder>,
         AppAction //
 {
-  factory StopListeningForPosts([void Function(StopListeningForPostsBuilder b) updates]) = _$StopListeningForPosts;
+  factory StopListeningForPosts(String uid) {
+    return _$StopListeningForPosts((StopListeningForPostsBuilder b) => b.uid = uid);
+  }
 
   StopListeningForPosts._();
+
+  String get uid;
 }
 
 abstract class OnPostsEvent //

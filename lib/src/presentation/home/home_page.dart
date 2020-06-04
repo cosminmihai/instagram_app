@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
-import 'package:instagram_app/src/actions/post/listen_for_posts.dart';
 import 'package:instagram_app/src/models/app_state.dart';
 import 'package:instagram_app/src/presentation/home/add_post_page.dart';
 import 'package:instagram_app/src/presentation/home/feed_part.dart';
@@ -44,15 +42,6 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   void initState() {
     super.initState();
     tabController = TabController(length: 4, vsync: this);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      store = StoreProvider.of<AppState>(context).dispatch(ListenForPosts());
-    });
-  }
-
-  @override
-  void dispose() {
-    store.dispatch(StopListeningForPosts());
-    super.dispose();
   }
 
   @override

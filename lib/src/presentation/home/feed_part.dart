@@ -30,16 +30,19 @@ class _FeedPartState extends State<FeedPart> {
   @override
   void initState() {
     super.initState();
-
     WidgetsBinding.instance.addPostFrameCallback((_) {
       store = StoreProvider.of<AppState>(context);
-      store.dispatch(ListenForPosts());
+      store.state.auth.user.following //
+          .map((String uid) => ListenForPosts(uid))
+          .forEach(store.dispatch);
     });
   }
 
   @override
   void dispose() {
-    store.dispatch(StopListeningForPosts());
+    store.state.auth.user.following //
+        .map((String uid) => StopListeningForPosts(uid))
+        .forEach(store.dispatch);
     super.dispose();
   }
 
@@ -56,8 +59,20 @@ class _FeedPartState extends State<FeedPart> {
                 return PostsLikesContainer(
                   builder: (BuildContext context, BuiltMap<String, BuiltList<Like>> likes) {
                     if (likes.isEmpty) {
-                      return const Center(
-                        child: Text('No posts yet.'),
+                      return Scaffold(
+                        appBar: AppBar(
+                          actions: <Widget>[
+                            IconButton(
+                              icon: const Icon(Icons.message),
+                              onPressed: () {
+                                Navigator.pushNamed(context, '/chats');
+                              },
+                            ),
+                          ],
+                        ),
+                        body: const Center(
+                          child: Text('No posts yet.'),
+                        ),
                       );
                     }
                     return Scaffold(
@@ -71,84 +86,90 @@ class _FeedPartState extends State<FeedPart> {
                           ),
                         ],
                       ),
-                      body: ListView.builder(
-                        itemCount: posts.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          final Post post = posts[index];
-                          final BuiltList<Like> postLikes = likes[post.id] ?? BuiltList<Like>();
-                          final Like currentUserLike =
-                              postLikes.firstWhere((Like like) => like.uid == currentUser.uid, orElse: () => null);
-                          final bool containsLike = currentUserLike != null;
-                          final AppUser user = contacts[post.uid];
-                          String date;
-                          if (DateTime.now().difference(post.createdAt) > const Duration(days: 1)) {
-                            date = dayFormat.format(post.createdAt);
-                          } else {
-                            date = hourFormat.format(post.createdAt);
-                          }
-                          return Container(
-                            height: MediaQuery.of(context).size.height / 2,
-                            child: Column(
-                              children: <Widget>[
-                                ListTile(
-                                  title: Text(user.displayName),
-                                  subtitle: Text('@${user.username}'),
-                                ),
-                                Expanded(
-                                  child: Image.network(
-                                    post.pictures.first,
-                                    fit: BoxFit.cover,
-                                    width: MediaQuery.of(context).size.width,
-                                  ),
-                                ),
-                                Row(
-                                  children: <Widget>[
-                                    Row(
-                                      children: <Widget>[
-                                        IconButton(
-                                          icon: containsLike
-                                              ? const Icon(Icons.favorite)
-                                              : const Icon(Icons.favorite_border),
-                                          onPressed: () {
-                                            if (containsLike) {
-                                              StoreProvider.of<AppState>(context).dispatch(DeleteLike(
-                                                  parentId: post.id, likeId: currentUserLike.id, type: LikeType.post));
-                                            } else {
-                                              StoreProvider.of<AppState>(context)
-                                                  .dispatch(CreateLike(post.id, LikeType.post));
-                                            }
-                                          },
+                      body: posts.isEmpty
+                          ? const Center(
+                              child: Text('No posts yet.'),
+                            )
+                          : ListView.builder(
+                              itemCount: posts.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                final Post post = posts[index];
+                                final BuiltList<Like> postLikes = likes[post.id] ?? BuiltList<Like>();
+                                final Like currentUserLike = postLikes
+                                    .firstWhere((Like like) => like.uid == currentUser.uid, orElse: () => null);
+                                final bool containsLike = currentUserLike != null;
+                                final AppUser user = contacts[post.uid];
+                                String date;
+                                if (DateTime.now().difference(post.createdAt) > const Duration(days: 1)) {
+                                  date = dayFormat.format(post.createdAt);
+                                } else {
+                                  date = hourFormat.format(post.createdAt);
+                                }
+                                return Container(
+                                  height: MediaQuery.of(context).size.height / 2,
+                                  child: Column(
+                                    children: <Widget>[
+                                      ListTile(
+                                        title: Text(user.displayName),
+                                        subtitle: Text('@${user.username}'),
+                                      ),
+                                      Expanded(
+                                        child: Image.network(
+                                          post.pictures.first,
+                                          fit: BoxFit.cover,
+                                          width: MediaQuery.of(context).size.width,
                                         ),
-                                        if (postLikes.isNotEmpty) Text('${postLikes.length}'),
-                                      ],
-                                    ),
-                                    IconButton(
-                                      icon: const Icon(Icons.chat_bubble_outline),
-                                      onPressed: () {
-                                        StoreProvider.of<AppState>(context).dispatch(SetSelectedPost(post.id));
-                                        Navigator.pushNamed(context, '/commentsPage');
-                                      },
-                                    ),
-                                    IconButton(
-                                      icon: const Icon(Icons.send),
-                                      onPressed: () {},
-                                    ),
-                                    const Spacer(),
-                                    IconButton(
-                                      icon: const Icon(Icons.bookmark_border),
-                                      onPressed: () {},
-                                    )
-                                  ],
-                                ),
-                                ListTile(
-                                  title: Text(post.description),
-                                  subtitle: Text(date),
-                                )
-                              ],
+                                      ),
+                                      Row(
+                                        children: <Widget>[
+                                          Row(
+                                            children: <Widget>[
+                                              IconButton(
+                                                icon: containsLike
+                                                    ? const Icon(Icons.favorite)
+                                                    : const Icon(Icons.favorite_border),
+                                                onPressed: () {
+                                                  if (containsLike) {
+                                                    StoreProvider.of<AppState>(context).dispatch(DeleteLike(
+                                                        parentId: post.id,
+                                                        likeId: currentUserLike.id,
+                                                        type: LikeType.post));
+                                                  } else {
+                                                    StoreProvider.of<AppState>(context)
+                                                        .dispatch(CreateLike(post.id, LikeType.post));
+                                                  }
+                                                },
+                                              ),
+                                              if (postLikes.isNotEmpty) Text('${postLikes.length}'),
+                                            ],
+                                          ),
+                                          IconButton(
+                                            icon: const Icon(Icons.chat_bubble_outline),
+                                            onPressed: () {
+                                              StoreProvider.of<AppState>(context).dispatch(SetSelectedPost(post.id));
+                                              Navigator.pushNamed(context, '/commentsPage');
+                                            },
+                                          ),
+                                          IconButton(
+                                            icon: const Icon(Icons.send),
+                                            onPressed: () {},
+                                          ),
+                                          const Spacer(),
+                                          IconButton(
+                                            icon: const Icon(Icons.bookmark_border),
+                                            onPressed: () {},
+                                          )
+                                        ],
+                                      ),
+                                      ListTile(
+                                        title: Text(post.description),
+                                        subtitle: Text(date),
+                                      )
+                                    ],
+                                  ),
+                                );
+                              },
                             ),
-                          );
-                        },
-                      ),
                     );
                   },
                 );

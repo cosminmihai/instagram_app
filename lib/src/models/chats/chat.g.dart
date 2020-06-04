@@ -24,11 +24,13 @@ class _$ChatSerializer implements StructuredSerializer<Chat> {
       serializers.serialize(object.users,
           specifiedType:
               const FullType(BuiltList, const [const FullType(String)])),
-      'lastMessage',
-      serializers.serialize(object.lastMessage,
-          specifiedType: const FullType(Message)),
     ];
-
+    if (object.lastMessage != null) {
+      result
+        ..add('lastMessage')
+        ..add(serializers.serialize(object.lastMessage,
+            specifiedType: const FullType(Message)));
+    }
     return result;
   }
 
@@ -81,9 +83,6 @@ class _$Chat extends Chat {
     }
     if (users == null) {
       throw new BuiltValueNullFieldError('Chat', 'users');
-    }
-    if (lastMessage == null) {
-      throw new BuiltValueNullFieldError('Chat', 'lastMessage');
     }
   }
 
@@ -167,14 +166,14 @@ class ChatBuilder implements Builder<Chat, ChatBuilder> {
     try {
       _$result = _$v ??
           new _$Chat._(
-              id: id, users: users.build(), lastMessage: lastMessage.build());
+              id: id, users: users.build(), lastMessage: _lastMessage?.build());
     } catch (_) {
       String _$failedField;
       try {
         _$failedField = 'users';
         users.build();
         _$failedField = 'lastMessage';
-        lastMessage.build();
+        _lastMessage?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'Chat', _$failedField, e.toString());

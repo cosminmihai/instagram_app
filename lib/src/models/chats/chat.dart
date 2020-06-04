@@ -14,12 +14,12 @@ abstract class Chat implements Built<Chat, ChatBuilder> {
     @required String id,
     @required List<String> users,
     Message lastMessage,
-  }){
+  }) {
     return _$Chat((ChatBuilder b) {
       b
         ..id = id
         ..users = ListBuilder<String>(users)
-        ..lastMessage = lastMessage.toBuilder();
+        ..lastMessage = lastMessage?.toBuilder();
     });
   }
 
@@ -31,6 +31,7 @@ abstract class Chat implements Built<Chat, ChatBuilder> {
 
   BuiltList<String> get users;
 
+  @nullable
   Message get lastMessage;
 
   Map<String, dynamic> get json => serializers.serializeWith(serializer, this);

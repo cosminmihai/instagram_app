@@ -8,6 +8,7 @@ import 'package:instagram_app/src/actions/auth/search_users.dart';
 import 'package:instagram_app/src/actions/auth/send_sms.dart';
 import 'package:instagram_app/src/actions/auth/start_following.dart';
 import 'package:instagram_app/src/actions/auth/stop_following.dart';
+import 'package:instagram_app/src/actions/chats/listen_for_chats.dart';
 import 'package:instagram_app/src/actions/get_action.dart';
 import 'package:instagram_app/src/data/authentication_api.dart';
 import 'package:instagram_app/src/models/app_state.dart';
@@ -45,6 +46,7 @@ class AuthEpics {
             .asStream()
             .expand<AppAction>((AppUser user) => <AppAction>[
                   LoginSuccessful(user),
+                  ListenForChats(),
                   ...user.following //
                       .where((String uid) => store.state.auth.contacts[uid] == null)
                       .map((String uid) => GetContact(uid))
@@ -58,7 +60,10 @@ class AuthEpics {
         .flatMap((LogOut action) => _authApi
             .logOut()
             .asStream()
-            .mapTo<AppAction>(LogOutSuccessful())
+            .expand<AppAction>((_) => <AppAction>[
+                  LogOutSuccessful(),
+                  StopListenForChats(),
+                ])
             .onErrorReturnWith((dynamic error) => LogOutError(error)));
   }
 
@@ -77,7 +82,10 @@ class AuthEpics {
         .flatMap((Registration action) => _authApi
             .register(store.state.auth.info)
             .asStream()
-            .map<AppAction>((AppUser user) => RegistrationSuccessful(user))
+            .expand<AppAction>((AppUser user) => <AppAction>[
+                  RegistrationSuccessful(user),
+                  ListenForChats(),
+                ])
             .onErrorReturnWith((dynamic error) => RegistrationError(error))
             .doOnData(action.result));
   }

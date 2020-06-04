@@ -94,6 +94,7 @@ class AuthApi {
     return appUser;
   }
 
+  /// Create a username for user.
   Future<String> reserveUsername({@required String email, @required String displayName}) async {
     if (email != null) {
       final String username = email.split('@')[0];
@@ -101,20 +102,16 @@ class AuthApi {
         return username;
       }
     }
-
     String username = displayName.split(' ').join('.').toLowerCase();
     if (await _checkUsername(username) != null) {
       return username;
     }
-
     final Random random = Random();
-
     if (email != null) {
       username = '${email.split('@')[0]}${random.nextInt(1 << 32)}';
     } else {
       username = '${displayName.split(' ').join('.')}${random.nextInt(1 << 32)}';
     }
-
     return username;
   }
 

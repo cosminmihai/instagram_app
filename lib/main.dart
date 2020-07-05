@@ -32,7 +32,7 @@ import 'package:algolia/algolia.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  const Algolia algolia = Algolia.init(applicationId: 'KDH7Q4ILAX', apiKey: 'd6a6db4ca16c4675e9a8f1f42c593cef');
+  const Algolia algolia = Algolia.init(applicationId: 'YOUR-APP-ID', apiKey: 'YOUR-API-KEY');
   final AlgoliaIndexReference index = algolia.index('users');
   final AuthApi authApi = AuthApi(
       auth: FirebaseAuth.instance,

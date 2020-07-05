@@ -5,9 +5,9 @@
 	<key>CLIENT_ID</key>
 	<string>730555540635-p02t5mc76d5uvbdbpiq4od8s0vrqe5ng.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.730555540635-p02t5mc76d5uvbdbpiq4od8s0vrqe5ng</string>
+	<string>GOOGLE-CONTENT</string>
 	<key>API_KEY</key>
-	<string>AIzaSyCNxgesbL1zsm6_ZGH6YkZUYbrerBXZptg</string>
+	<string>GOOGLE-API</string>
 	<key>GCM_SENDER_ID</key>
 	<string>730555540635</string>
 	<key>PLIST_VERSION</key>
